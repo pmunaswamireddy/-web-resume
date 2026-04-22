@@ -38,14 +38,14 @@ export default function ResumeBuilder() {
   
   const [basicInfo, setBasicInfo] = useState({
     name: 'Penumuru Madhu Sudhan Reddy',
-    title: 'Software Engineer | AI & Data Science Student',
+    title: 'Software Engineer | AI & Data Science Specialist',
     email: 'pmrpmadhusudhanreddy@gmail.com',
     phone: '7672082814',
     github1: 'https://github.com/pmunaswamireddy',
     github2: 'https://github.com/pmr1234',
     github3: 'https://web-resume-peach-xi.vercel.app/',
     github4: 'https://frontend-nine-dusky-21.vercel.app/',
-    summary: 'Passionate 3rd-year B.Tech student in Artificial Intelligence and Data Science at Mother Theresa Institute of Engineering and Technology. Enthusiastic about exploring new technologies and building innovative solutions. Proven problem-solving capabilities demonstrated by winning first prize in the HACKHOUSE 24-hour Web Development Hackathon. Experienced in developing practical applications utilizing Artificial Intelligence, Full-Stack Web Development, and Data Engineering. Fast learner with strong technical proficiency and a drive for leadership and high-accuracy work.'
+    summary: 'Currently a 4th-year B.Tech student at MTIET with a specialized focus on Full-Stack Development, Data Engineering, and AI. Recognized for leading a team to 1st Prize at the HACKHOUSE 24-Hour Live Hackathon. Backed by 240+ hours of internship experience with industry leaders like AWS, Google, and Palo Alto Networks. Adept at engineering high-accuracy solutions and leveraging Elite+Silver NPTEL expertise to deliver scalable, data-driven applications in high-pressure professional environments.'
   });
 
   const [experience, setExperience] = useState([
@@ -54,94 +54,130 @@ export default function ResumeBuilder() {
       title: 'First Prize (₹8,000) - HACKHOUSE 24-Hour Live Hackathon',
       company: 'VAULTSPHERE AI TECHNOLOGIES PVT. LTD. & MTIET',
       date: 'Dec 26-27, 2025',
-      description: 'Competed in a rigorous 24-hour live web development hackathon and developed an innovative solution that secured the 1st prize out of participating teams. Demonstrated quick learning, rapid prototyping, and full-stack web development skills.'
+      description: 'Led a team to victory in a national-level hackathon. Developed a fully functional Health Management platform using React and Node.js within a strict 24-hour deadline.'
     },
     {
       id: 2,
-      title: '3rd Prize (₹500) - Technical Science Quiz',
-      company: 'Mother Theresa Institute of Engineering and Technology (MTIET)',
-      date: '1st Year B.Tech',
-      description: 'Secured the 3rd prize out of all participating teams in the technical science quiz competition held at the college level.'
+      title: 'AWS Cloud & Gen AI Intern (240 Hours)',
+      company: 'AWS / AICTE',
+      date: 'Aug - Oct 2024',
+      description: 'Intensive internship focused on AWS services, Generative AI models, and cloud architecture. Built scalable AI solutions using AWS Bedrock and Lambda.'
+    },
+    {
+      id: 3,
+      title: 'Data Engineering Intern (Grade: O)',
+      company: 'AWS Academy / EduSkills',
+      date: 'Oct - Dec 2025',
+      description: 'Engineered data pipelines and processed large datasets using AWS cloud infrastructure.'
+    },
+    {
+      id: 4,
+      title: 'Full Stack Web Development Intern',
+      company: 'Gen Proces',
+      date: 'July 2025',
+      description: 'Developed and maintained responsive web applications using modern JavaScript frameworks.'
+    },
+    {
+      id: 5,
+      title: 'Google Cloud Engineering Intern',
+      company: 'Google Cloud / AICTE',
+      date: 'July - Sep 2024',
+      description: 'Implemented cloud infrastructure solutions and learned about GCP big data services including BigQuery and Dataflow.'
+    },
+    {
+      id: 6,
+      title: 'Ethical Hacking Intern (Grade: P)',
+      company: 'EduSkills Academy',
+      date: 'April - June 2025',
+      description: 'Focused on penetration testing, network security, and vulnerability assessment.'
     }
   ]);
+
 
   const [education, setEducation] = useState([
     {
       id: 1,
       degree: 'B.Tech in Artificial Intelligence & Data Science',
-      school: 'Mother Theresa Institute of Engineering and Technology (MTIET)',
-      grade: '8.60 CGPA (81.0%)',
-      details: 'Active participant in technical cohorts and hackathons.'
+      school: 'MTIET / JNTUA',
+      grade: '8.60 CGPA (Currently 4th Year)',
+      details: 'National Hackathon Champion; Focus on AI/ML and Full-Stack Engineering.'
     },
     {
       id: 2,
+      degree: 'Elite + Silver Certification in Industry 4.0 & IIoT',
+      school: 'NPTEL / IIT Kanpur',
+      grade: 'Grade: Elite+Silver',
+      details: 'Ranked in the top percentage of candidates nationwide.'
+    },
+    {
+      id: 3,
       degree: 'Intermediate / 12th Grade',
-      school: 'State Board of Technical Education',
+      school: 'Board of Intermediate Education, AP',
       grade: '946 / 1000 (94.6%)',
       details: ''
     },
     {
-      id: 3,
-      degree: 'Secondary School Certificate (10th Grade)',
+      id: 4,
+      degree: 'SSC / 10th Grade',
       school: 'Board of Secondary Education, AP',
       grade: '573 / 600 (95.5%)',
       details: ''
     },
     {
-      id: 4,
-      degree: 'AWS Data Engineering Cohort 14',
-      school: 'Comprehensive training program',
-      grade: 'Completed',
-      details: 'Focused on building robust data engineering pipelines.'
-    },
-    {
       id: 5,
-      degree: 'AICTE Cohorts Participant',
-      school: 'Cohort 9, Cohort 10, and advanced programs',
-      grade: 'Certified',
-      details: 'Focusing on cutting edge technical skills.'
+      degree: 'Python for Data Science (edX)',
+      school: 'IBM / edX',
+      grade: 'Grade: Pass',
+      details: 'Certified in advanced Python data analysis and visualization.'
     },
     {
       id: 6,
-      degree: 'NPTEL Certification',
-      school: 'Introduction to Industry 4.0 and Industrial IoT',
-      grade: 'Score: 88',
-      details: '12-week course'
+      degree: 'Precision Engineering Certification',
+      school: 'CMTI, Bangalore',
+      grade: 'Grade: Pass',
+      details: 'Specialized training in high-accuracy engineering and manufacturing.'
     }
   ]);
 
   const [projects, setProjects] = useState([
     {
       id: 1,
-      title: 'JNTUA Calculator App',
-      link: 'https://github.com/pmunaswamireddy/-jntua-calculator.git',
+      title: 'Scrcpy Master Control',
+      link: 'https://github.com/pmunaswamireddy/scrcpy-master-control.git',
       bullets: [
-        'Developed an Android application (APK) that calculates SGPA, CGPA, and percentage for JNTUA R23 regulations.',
-        'Implemented core features including manual grade input and AI-powered extraction of results from images and PDFs.'
+        'Advanced Windows GUI for low-latency mirroring and batch control of multiple Android devices using ADB.',
+        'Features built-in wireless pairing (QR Code/mDNS), internet tunneling (Tailscale), and Broadcast Mode.',
+        'Engineered with Python (CustomTkinter) and a background-buffered UI queue for zero-lag performance.'
       ]
     },
     {
       id: 2,
-      title: 'Hadoop Installer Automation',
-      link: 'https://github.com/pmr1234/Hadoop-Installer.git',
+      title: 'JNTUA Calculator App',
+      link: 'https://github.com/pmunaswamireddy/-jntua-calculator.git',
       bullets: [
-        'Built a streamlined installation and configuration script to set up Hadoop ecosystems, reducing manual setup time securely and efficiently.'
+        'Android APK for automatic SGPA/CGPA calculation with AI-based OCR extraction from PDF mark sheets.',
+        'Built using Java/Kotlin with integrated ML Kit for text recognition from images.',
+        'Reduces manual GPA calculation effort to zero for JNTUA students.'
       ]
     },
     {
       id: 3,
-      title: 'Hetro Shopping App',
-      link: '',
+      title: 'Elderly Guardian AI',
+      link: 'https://frontend-nine-dusky-21.vercel.app/',
       bullets: [
-        'Developed a comprehensive e-commerce platform incorporating modern tech stacks for a seamless shopping experience.'
+        'ML-powered web platform for remote elderly health monitoring and emergency alert system.',
+        'Built with React frontend and FastAPI backend; deployed live on Vercel.',
+        'Features real-time health data tracking, AI anomaly detection, and caregiver notifications.'
       ]
     },
     {
       id: 4,
-      title: 'Elderly Guardian AI',
-      link: 'https://frontend-nine-dusky-21.vercel.app/',
+      title: 'Hetro Shopping App',
+      link: '',
       bullets: [
-        'ML-powered platform for remote elderly monitoring and care; deployed on Vercel.'
+        'Full-stack e-commerce platform with secure authentication, cart management, and product listing.',
+        'Developed using React.js, Node.js, Express.js, and MongoDB with JWT-based auth.',
+        'Includes admin panel for product and order management with responsive UI design.'
       ]
     }
   ]);
@@ -150,8 +186,10 @@ export default function ResumeBuilder() {
     { id: 1, category: 'Languages', items: 'C, Python, Java, JavaScript, HTML, CSS, SQL' },
     { id: 2, category: 'Frameworks & Tech', items: 'React.js, Next.js, Node.js, Express.js, Hadoop, Spark, MongoDB, Hive, Tableau, Prompt Engineering' },
     { id: 3, category: 'Soft Skills', items: 'Leadership, Effective Communication, High Accuracy, Confident' },
-    { id: 4, category: 'Spoken Languages', items: 'Telugu, Hindi, English, Sanskrit' }
+    { id: 4, category: 'Spoken Languages', items: 'Telugu, Hindi, English, Sanskrit' },
+    { id: 5, category: 'Hobbies', items: 'Gaming, Cricket, Photography, Traveling, Exploring New Tech' }
   ]);
+
 
   // Handlers for Images
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
