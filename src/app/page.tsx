@@ -187,7 +187,7 @@ export default function ResumeBuilder() {
     { id: 2, category: 'Frameworks & Tech', items: 'React.js, Next.js, Node.js, Express.js, Hadoop, Spark, MongoDB, Hive, Tableau, Prompt Engineering' },
     { id: 3, category: 'Soft Skills', items: 'Leadership, Effective Communication, High Accuracy, Confident' },
     { id: 4, category: 'Spoken Languages', items: 'Telugu, Hindi, English, Sanskrit' },
-    { id: 5, category: 'Hobbies', items: 'Gaming, Cricket, Photography, Traveling, Exploring New Tech' }
+    { id: 5, category: 'Hobbies', items: 'Gaming, Photography, Traveling, Exploring New Tech' }
   ]);
 
 
