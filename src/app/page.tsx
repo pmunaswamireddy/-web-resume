@@ -564,7 +564,7 @@ export default function ResumeBuilder() {
                             <button 
                               onClick={() => {
                                 const newProj = [...projects];
-                                newProj[index].bullets = newProj[index].bullets.filter((_: any, i: number) => i !== bIndex);
+                                newProj[index].bullets = newProj[index].bullets.filter((_: string, i: number) => i !== bIndex);
                                 setProjects(newProj);
                               }}
                               className="text-red-400 hover:text-red-300 p-1"
