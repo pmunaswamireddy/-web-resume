@@ -2,7 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { Camera, Upload, Plus, Trash2, Printer, Edit2, Check, Download } from 'lucide-react';
+import Image from 'next/image';
+import { Camera, Upload, Plus, Trash2, Printer, Edit2, Check } from 'lucide-react';
 
 export default function ResumeBuilder() {
   const [isEditing, setIsEditing] = useState(false);
@@ -14,16 +15,24 @@ export default function ResumeBuilder() {
   });
 
   // Default Data State
-  const [profileImg, setProfileImg] = useState<string | null>(null);
-  const [photoOffsetY, setPhotoOffsetY] = useState(25);
+  const [profileImg, setProfileImg] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') return localStorage.getItem('resume_profileImg');
+    return null;
+  });
+  const [photoOffsetY, setPhotoOffsetY] = useState(() => {
+    if (typeof window !== 'undefined') return Number(localStorage.getItem('resume_photoOffsetY')) || 25;
+    return 25;
+  });
 
-  // Persist profile photo across refreshes
+  // Keep localStorage in sync when state changes
   useEffect(() => {
-    const savedImg = localStorage.getItem('resume_profileImg');
-    const savedOffset = localStorage.getItem('resume_photoOffsetY');
-    if (savedImg) setProfileImg(savedImg);
-    if (savedOffset) setPhotoOffsetY(Number(savedOffset));
-  }, []);
+    if (profileImg) localStorage.setItem('resume_profileImg', profileImg);
+    else localStorage.removeItem('resume_profileImg');
+  }, [profileImg]);
+
+  useEffect(() => {
+    localStorage.setItem('resume_photoOffsetY', String(photoOffsetY));
+  }, [photoOffsetY]);
 
   const saveProfileImg = (img: string | null) => {
     setProfileImg(img);
@@ -217,7 +226,7 @@ export default function ResumeBuilder() {
         saveProfileImg(canvas.toDataURL('image/jpeg'));
         stream.getTracks().forEach(track => track.stop());
       }, 1500);
-    } catch (err) {
+    } catch {
       alert("Could not access camera. Please check permissions.");
     }
   };
@@ -232,7 +241,7 @@ export default function ResumeBuilder() {
   const addProject = () => setProjects([...projects, { id: Date.now(), title: '', link: '', bullets: [''] }]);
   const removeProject = (id: number) => setProjects(projects.filter(p => p.id !== id));
   const updateProjectBullet = (projectId: number, bulletIndex: number, value: string) => {
-    setProjects(projects.map(p => {
+    setProjects(projects.map((p: any) => {
       if (p.id === projectId) {
         const newBullets = [...p.bullets];
         newBullets[bulletIndex] = value;
@@ -242,11 +251,11 @@ export default function ResumeBuilder() {
     }));
   };
   const addProjectBullet = (projectId: number) => {
-    setProjects(projects.map(p => p.id === projectId ? { ...p, bullets: [...p.bullets, ''] } : p));
+    setProjects(projects.map((p: any) => p.id === projectId ? { ...p, bullets: [...p.bullets, ''] } : p));
   };
 
   const addSkill = () => setSkills([...skills, { id: Date.now(), category: '', items: '' }]);
-  const removeSkill = (id: number) => setSkills(skills.filter(s => s.id !== id));
+  const removeSkill = (id: number) => setSkills(skills.filter((s: any) => s.id !== id));
 
   return (
     <div className="min-h-screen bg-[#0b0c10] text-[#c5c6c7]">
@@ -288,9 +297,12 @@ export default function ResumeBuilder() {
               }}
             >
               {profileImg ? (
-                <img
+                <Image
                   src={profileImg}
                   alt="Profile"
+                  width={150}
+                  height={150}
+                  unoptimized
                   style={{
                     width: '100%',
                     height: '100%',
@@ -398,25 +410,25 @@ export default function ResumeBuilder() {
             </div>
             
             <div className="flex flex-col gap-6">
-              {experience.map((item, index) => {
+              {experience.map((item: any, index: number) => {
                 if (!isEditing && !item.title && !item.company) return null;
                 
                 return isEditing ? (
                   <div key={item.id} className="bg-[#1f2833] bg-opacity-50 p-4 rounded-lg relative border border-[#45a29e] border-opacity-30">
                     <button onClick={() => removeExperience(item.id)} className="absolute top-4 right-4 text-red-400 hover:text-red-300"><Trash2 size={22}/></button>
                     <div className="flex flex-col gap-3 pr-8">
-                      <input value={item.title} onChange={e => {
+                      <input value={item.title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const newExp = [...experience]; newExp[index].title = e.target.value; setExperience(newExp);
                       }} className="bg-transparent border-b border-[#45a29e] text-lg font-bold text-white outline-none w-full pb-1" placeholder="Job Title or Achievement" />
                       <div className="grid grid-cols-2 gap-3">
-                        <input value={item.company} onChange={e => {
+                        <input value={item.company} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           const newExp = [...experience]; newExp[index].company = e.target.value; setExperience(newExp);
                         }} className="bg-[#0b0c10] p-2 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1]" placeholder="Company or Organization" />
-                        <input value={item.date} onChange={e => {
+                        <input value={item.date} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           const newExp = [...experience]; newExp[index].date = e.target.value; setExperience(newExp);
                         }} className="bg-[#0b0c10] p-2 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1]" placeholder="Date Range (e.g. Dec 2025)" />
                       </div>
-                      <textarea value={item.description} onChange={e => {
+                      <textarea value={item.description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                         const newExp = [...experience]; newExp[index].description = e.target.value; setExperience(newExp);
                       }} className="bg-[#0b0c10] p-3 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1] min-h-[80px]" placeholder="Description of your role and achievements..." />
                     </div>
@@ -453,21 +465,21 @@ export default function ResumeBuilder() {
             <div className="flex flex-col gap-6">
               {isEditing ? (
                 // Editing View: Kept as standard forms for easy editing
-                education.map((item, index) => {
+                education.map((item: any, index: number) => {
                   return (
                     <div key={item.id} className="bg-[#1f2833] bg-opacity-50 p-4 rounded-lg relative border border-[#45a29e] border-opacity-30">
                       <button onClick={() => removeEducation(item.id)} className="absolute top-4 right-4 text-red-400 hover:text-red-300"><Trash2 size={22}/></button>
                       <div className="flex flex-col gap-3 pr-8">
-                        <input value={item.degree} onChange={e => {
+                        <input value={item.degree} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           const newEd = [...education]; newEd[index].degree = e.target.value; setEducation(newEd);
                         }} className="bg-transparent border-b border-[#45a29e] text-lg font-bold text-white outline-none w-full pb-1" placeholder="Degree or Certification Name" />
-                        <input value={item.school} onChange={e => {
+                        <input value={item.school} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           const newEd = [...education]; newEd[index].school = e.target.value; setEducation(newEd);
                         }} className="bg-[#0b0c10] p-2 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1]" placeholder="Institution Name" />
-                        <input value={item.grade} onChange={e => {
+                        <input value={item.grade} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           const newEd = [...education]; newEd[index].grade = e.target.value; setEducation(newEd);
                         }} className="bg-[#0b0c10] p-2 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1]" placeholder="Grade / GPA / Percentage" />
-                        <input value={item.details} onChange={e => {
+                        <input value={item.details} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           const newEd = [...education]; newEd[index].details = e.target.value; setEducation(newEd);
                         }} className="bg-[#0b0c10] p-2 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1]" placeholder="Additional details (optional)" />
                       </div>
@@ -486,7 +498,7 @@ export default function ResumeBuilder() {
                       </tr>
                     </thead>
                     <tbody>
-                      {education.filter(e => e.degree || e.school || e.grade).map((item) => (
+                      {education.filter((e: any) => e.degree || e.school || e.grade).map((item: any) => (
                         <tr key={item.id} className="border-b border-[#1f2833] hover:bg-[#1f2833] hover:bg-opacity-30 transition-colors">
                           <td className="p-3 border-r border-[#1f2833] font-medium text-white">{item.degree}
                             {item.details && <div className="text-xs text-[#8c9096] mt-1 font-normal break-words max-w-[250px]">{item.details}</div>}
@@ -516,7 +528,7 @@ export default function ResumeBuilder() {
             </div>
             
             <div className="flex flex-col gap-6">
-              {projects.map((item, index) => {
+              {projects.map((item: any, index: number) => {
                 if (!isEditing && !item.title) return null;
                 
                 return isEditing ? (
@@ -524,29 +536,29 @@ export default function ResumeBuilder() {
                     <button onClick={() => removeProject(item.id)} className="absolute top-4 right-4 text-red-400 hover:text-red-300"><Trash2 size={16}/></button>
                     <div className="flex flex-col gap-3 pr-8">
                       <div className="grid grid-cols-2 gap-3">
-                        <input value={item.title} onChange={e => {
+                        <input value={item.title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           const newProj = [...projects]; newProj[index].title = e.target.value; setProjects(newProj);
                         }} className="bg-transparent border-b border-[#45a29e] text-lg font-bold text-white outline-none w-full pb-1" placeholder="Project Name" />
-                        <input value={item.link} onChange={e => {
+                        <input value={item.link} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                           const newProj = [...projects]; newProj[index].link = e.target.value; setProjects(newProj);
                         }} className="bg-transparent border-b border-[#45a29e] text-sm text-[#66fcf1] outline-none w-full pb-1" placeholder="Project Link (Optional)" />
                       </div>
                       
                       <div className="flex flex-col gap-2 mt-2">
                         <span className="text-xs text-[#8c9096] uppercase tracking-wider">Bullet Points</span>
-                        {item.bullets.map((bullet, bIndex) => (
+                        {item.bullets.map((bullet: string, bIndex: number) => (
                           <div key={bIndex} className="flex items-center gap-2">
                             <span className="text-[#66fcf1] text-lg leading-none">•</span>
                             <input 
                               value={bullet} 
-                              onChange={e => updateProjectBullet(item.id, bIndex, e.target.value)} 
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateProjectBullet(item.id, bIndex, e.target.value)} 
                               className="bg-[#0b0c10] p-2 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1] w-full" 
                               placeholder="Project detail or achievement..." 
                             />
                             <button 
                               onClick={() => {
                                 const newProj = [...projects];
-                                newProj[index].bullets = newProj[index].bullets.filter((_, i) => i !== bIndex);
+                                newProj[index].bullets = newProj[index].bullets.filter((_: any, i: number) => i !== bIndex);
                                 setProjects(newProj);
                               }}
                               className="text-red-400 hover:text-red-300 p-1"
@@ -567,9 +579,9 @@ export default function ResumeBuilder() {
                         {item.link && <div className="text-sub"><a href={item.link} target="_blank" rel="noopener noreferrer">{item.link}</a></div>}
                       </div>
                     </div>
-                    {item.bullets.filter(b => b.trim() !== '').length > 0 && (
+                    {item.bullets.filter((b: string) => b.trim() !== '').length > 0 && (
                       <ul className="resume-list">
-                        {item.bullets.filter(b => b.trim() !== '').map((bullet, idx) => (
+                        {item.bullets.filter((b: string) => b.trim() !== '').map((bullet: string, idx: number) => (
                           <li key={idx}>{bullet}</li>
                         ))}
                       </ul>
@@ -594,17 +606,17 @@ export default function ResumeBuilder() {
             </div>
             
             <div className="flex flex-col gap-6">
-              {skills.map((item, index) => {
+              {skills.map((item: any, index: number) => {
                 if (!isEditing && !item.category && !item.items) return null;
                 
                 return isEditing ? (
                   <div key={item.id} className="bg-[#1f2833] bg-opacity-50 p-4 rounded-lg relative border border-[#45a29e] border-opacity-30">
                     <button onClick={() => removeSkill(item.id)} className="absolute top-4 right-4 text-red-400 hover:text-red-300"><Trash2 size={16}/></button>
                     <div className="flex flex-col gap-3 pr-8">
-                      <input value={item.category} onChange={e => {
+                      <input value={item.category} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const newSkills = [...skills]; newSkills[index].category = e.target.value; setSkills(newSkills);
                       }} className="bg-transparent border-b border-[#45a29e] text-lg font-bold text-white outline-none w-full pb-1" placeholder="Skill Category (e.g. Languages)" />
-                      <input value={item.items} onChange={e => {
+                      <input value={item.items} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const newSkills = [...skills]; newSkills[index].items = e.target.value; setSkills(newSkills);
                       }} className="bg-[#0b0c10] p-2 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1]" placeholder="Comma separated items (e.g. Python, Java, C++)" />
                     </div>
@@ -613,7 +625,7 @@ export default function ResumeBuilder() {
                   <div key={item.id} className="skill-category">
                     {item.category && <h3>{item.category}</h3>}
                     <div className="skills-container">
-                      {item.items.split(',').filter(s => s.trim() !== '').map((skill, idx) => (
+                      {item.items.split(',').filter((s: string) => s.trim() !== '').map((skill: string, idx: number) => (
                         <span key={idx} className="skill-tag">{skill.trim()}</span>
                       ))}
                     </div>
