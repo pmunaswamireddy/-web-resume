@@ -99,7 +99,7 @@ export default function ResumeBuilder() {
       id: 1,
       degree: 'B.Tech in Artificial Intelligence & Data Science',
       school: 'MTIET / JNTUA',
-      grade: '8.60 CGPA (Currently 4th Year)',
+      grade: '8.60 CGPA (81%) | Currently 4th Year',
       details: 'National Hackathon Champion; Focus on AI/ML and Full-Stack Engineering.'
     },
     {
