@@ -14,6 +14,12 @@ export default function ResumeBuilder() {
     documentTitle: 'Madhu_Sudhan_Reddy_Resume',
   });
 
+  // Interfaces for Type Safety
+  interface Experience { id: number; title: string; company: string; date: string; description: string; }
+  interface Education { id: number; degree: string; school: string; grade: string; details: string; }
+  interface Project { id: number; title: string; link: string; bullets: string[]; }
+  interface Skill { id: number; category: string; items: string; }
+
   // Default Data State
   const [profileImg, setProfileImg] = useState<string | null>(() => {
     if (typeof window !== 'undefined') return localStorage.getItem('resume_profileImg');
@@ -241,7 +247,7 @@ export default function ResumeBuilder() {
   const addProject = () => setProjects([...projects, { id: Date.now(), title: '', link: '', bullets: [''] }]);
   const removeProject = (id: number) => setProjects(projects.filter(p => p.id !== id));
   const updateProjectBullet = (projectId: number, bulletIndex: number, value: string) => {
-    setProjects(projects.map((p: any) => {
+    setProjects(projects.map((p: Project) => {
       if (p.id === projectId) {
         const newBullets = [...p.bullets];
         newBullets[bulletIndex] = value;
@@ -251,11 +257,11 @@ export default function ResumeBuilder() {
     }));
   };
   const addProjectBullet = (projectId: number) => {
-    setProjects(projects.map((p: any) => p.id === projectId ? { ...p, bullets: [...p.bullets, ''] } : p));
+    setProjects(projects.map((p: Project) => p.id === projectId ? { ...p, bullets: [...p.bullets, ''] } : p));
   };
 
   const addSkill = () => setSkills([...skills, { id: Date.now(), category: '', items: '' }]);
-  const removeSkill = (id: number) => setSkills(skills.filter((s: any) => s.id !== id));
+  const removeSkill = (id: number) => setSkills(skills.filter((s: Skill) => s.id !== id));
 
   return (
     <div className="min-h-screen bg-[#0b0c10] text-[#c5c6c7]">
@@ -410,7 +416,7 @@ export default function ResumeBuilder() {
             </div>
             
             <div className="flex flex-col gap-6">
-              {experience.map((item: any, index: number) => {
+              {experience.map((item: Experience, index: number) => {
                 if (!isEditing && !item.title && !item.company) return null;
                 
                 return isEditing ? (
@@ -465,7 +471,7 @@ export default function ResumeBuilder() {
             <div className="flex flex-col gap-6">
               {isEditing ? (
                 // Editing View: Kept as standard forms for easy editing
-                education.map((item: any, index: number) => {
+                education.map((item: Education, index: number) => {
                   return (
                     <div key={item.id} className="bg-[#1f2833] bg-opacity-50 p-4 rounded-lg relative border border-[#45a29e] border-opacity-30">
                       <button onClick={() => removeEducation(item.id)} className="absolute top-4 right-4 text-red-400 hover:text-red-300"><Trash2 size={22}/></button>
@@ -498,7 +504,7 @@ export default function ResumeBuilder() {
                       </tr>
                     </thead>
                     <tbody>
-                      {education.filter((e: any) => e.degree || e.school || e.grade).map((item: any) => (
+                      {education.filter((e: Education) => e.degree || e.school || e.grade).map((item: Education) => (
                         <tr key={item.id} className="border-b border-[#1f2833] hover:bg-[#1f2833] hover:bg-opacity-30 transition-colors">
                           <td className="p-3 border-r border-[#1f2833] font-medium text-white">{item.degree}
                             {item.details && <div className="text-xs text-[#8c9096] mt-1 font-normal break-words max-w-[250px]">{item.details}</div>}
@@ -528,7 +534,7 @@ export default function ResumeBuilder() {
             </div>
             
             <div className="flex flex-col gap-6">
-              {projects.map((item: any, index: number) => {
+              {projects.map((item: Project, index: number) => {
                 if (!isEditing && !item.title) return null;
                 
                 return isEditing ? (
@@ -606,7 +612,7 @@ export default function ResumeBuilder() {
             </div>
             
             <div className="flex flex-col gap-6">
-              {skills.map((item: any, index: number) => {
+              {skills.map((item: Skill, index: number) => {
                 if (!isEditing && !item.category && !item.items) return null;
                 
                 return isEditing ? (
