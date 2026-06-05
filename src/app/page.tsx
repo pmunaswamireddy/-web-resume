@@ -60,7 +60,7 @@ export default function ResumeBuilder() {
     github2: 'https://github.com/pmr1234',
     github3: 'https://web-resume-peach-xi.vercel.app/',
     github4: 'https://frontend-nine-dusky-21.vercel.app/',
-    summary: 'Currently a 4th-year B.Tech student at MTIET with a specialized focus on Full-Stack Development, Data Engineering, and AI. Recognized for leading a team to 1st Prize at the HACKHOUSE 24-Hour Live Hackathon. Backed by 240+ hours of internship experience with industry leaders like AWS, Google, and Palo Alto Networks. Adept at engineering high-accuracy solutions and leveraging Elite+Silver NPTEL expertise to deliver scalable, data-driven applications in high-pressure professional environments.'
+    summary: 'Currently a 4th-year B.Tech student at MTIET with a specialized focus on Full-Stack Web Development (React.js, Node.js, Next.js, Golang). Recognized for leading a team to 1st Prize at the HACKHOUSE 24-Hour Live Hackathon. Backed by 240+ hours of internship experience with industry leaders like AWS, Google, and Palo Alto Networks. Adept at engineering scalable solutions and utilizing Docker and CI/CD to deliver highly responsive applications in high-pressure professional environments.'
   });
 
   const [experience, setExperience] = useState([
@@ -198,8 +198,8 @@ export default function ResumeBuilder() {
   ]);
 
   const [skills, setSkills] = useState([
-    { id: 1, category: 'Languages', items: 'C, Python, Java, JavaScript, HTML, CSS, SQL' },
-    { id: 2, category: 'Frameworks & Tech', items: 'React.js, Next.js, Node.js, Express.js, Hadoop, Spark, MongoDB, Hive, Tableau, Prompt Engineering' },
+    { id: 1, category: 'Languages', items: 'C, Python, Java, JavaScript, HTML/CSS, SQL' },
+    { id: 2, category: 'Frameworks & Tech', items: 'React.js, Next.js, Node.js, Golang, Docker, Kubernetes, CI/CD' },
     { id: 3, category: 'Soft Skills', items: 'Leadership, Effective Communication, High Accuracy, Confident' },
     { id: 4, category: 'Spoken Languages', items: 'Telugu, Hindi, English, Sanskrit' },
     { id: 5, category: 'Hobbies', items: 'Gaming, Photography, Traveling, Exploring New Tech' }
@@ -265,97 +265,14 @@ export default function ResumeBuilder() {
 
   return (
     <div className="min-h-screen bg-[#0b0c10] text-[#c5c6c7]">
-      {/* Floating Action Controls */}
-      <div className="fixed top-4 right-4 z-50 flex gap-2">
-        <button 
-          onClick={() => setIsEditing(!isEditing)}
-          className="flex items-center gap-2 px-4 py-2 bg-[#1f2833] border border-[#66fcf1] border-opacity-30 rounded-lg text-[#66fcf1] hover:bg-[#66fcf1] hover:text-[#0b0c10] transition-all shadow-lg"
-        >
-          {isEditing ? <><Check size={22}/> Preview Mode</> : <><Edit2 size={22}/> Edit Mode</>}
-        </button>
-        {!isEditing && (
-          <button 
-            onClick={() => handlePrint()}
-            className="flex items-center gap-2 px-5 py-2.5 bg-[#66fcf1] rounded-lg text-[#0b0c10] hover:bg-[#45a29e] transition-all shadow-lg font-bold text-base"
-          >
-            <Printer size={22}/> Export PDF
-          </button>
-        )}
-      </div>
+      {/* Floating Action Controls Removed */}
 
       <main ref={printRef} className="container mx-auto max-w-[1000px] px-6 py-12 flex flex-col gap-12 pdf-container">
         
         {/* Hero Section */}
         <section className={`hero text-center flex flex-col relative items-center ${isEditing ? 'border border-dashed border-[#45a29e] p-6 rounded-xl bg-[#1f2833] bg-opacity-30' : ''}`}>
           
-          {/* Profile Photo Area */}
-          <div className="relative group mb-6 flex flex-col items-center">
-            {/* The circle container – overflow:hidden is key */}
-            <div
-              style={{
-                width: '150px',
-                height: '150px',
-                borderRadius: '50%',
-                overflow: 'hidden',
-                border: '4px solid #66fcf1',
-                boxShadow: '0 0 20px rgba(102,252,241,0.3)',
-                flexShrink: 0
-              }}
-            >
-              {profileImg ? (
-                <Image
-                  src={profileImg}
-                  alt="Profile"
-                  width={150}
-                  height={150}
-                  unoptimized
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    objectPosition: `center ${photoOffsetY}%`,
-                  }}
-                />
-              ) : (
-                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#1f2833', color: '#8c9096', fontSize: '0.85rem' }}>
-                  No Photo
-                </div>
-              )}
-            </div>
 
-            {isEditing && (
-              <div className="mt-3 flex flex-col items-center gap-2">
-                {/* Upload / Camera row */}
-                <div className="flex gap-2 bg-[#0b0c10] p-1 rounded-lg border border-[#66fcf1] shadow-xl">
-                  <label className="p-2 hover:bg-[#1f2833] rounded cursor-pointer text-[#66fcf1]" title="Upload Image">
-                    <Upload size={16} />
-                    <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
-                  </label>
-                  <button onClick={captureCamera} className="p-2 hover:bg-[#1f2833] rounded cursor-pointer text-[#66fcf1]" title="Take Photo">
-                    <Camera size={16} />
-                  </button>
-                  {profileImg && (
-                    <button onClick={() => saveProfileImg(null)} className="p-2 hover:bg-red-900 rounded cursor-pointer text-red-400" title="Remove Photo">
-                      <Trash2 size={16} />
-                    </button>
-                  )}
-                </div>
-                {/* Vertical offset slider */}
-                {profileImg && (
-                  <div className="flex items-center gap-2 text-xs text-[#8c9096]">
-                    <span>⬆ Face</span>
-                    <input
-                      type="range" min={0} max={100} value={photoOffsetY}
-                      onChange={e => saveOffsetY(Number(e.target.value))}
-                      className="w-28 accent-[#66fcf1]"
-                      title="Adjust vertical position of face"
-                    />
-                    <span>⬇</span>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
 
           {isEditing ? (
             <div className="w-full max-w-2xl flex flex-col gap-4 mt-6">
