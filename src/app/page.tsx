@@ -53,7 +53,7 @@ export default function ResumeBuilder() {
   
   const [basicInfo, setBasicInfo] = useState({
     name: 'Penumuru Madhu Sudhan Reddy',
-    title: 'Software Engineer | AI & Data Science Specialist',
+    title: 'Software Engineer | AI & Data Science (AI&DS)',
     email: 'pmrpmadhusudhanreddy@gmail.com',
     phone: '7672082814',
     github1: 'https://github.com/pmunaswamireddy',
