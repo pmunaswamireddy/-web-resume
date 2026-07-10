@@ -60,7 +60,7 @@ export default function ResumeBuilder() {
     github2: 'https://github.com/pmr1234',
     github3: 'https://web-resume-peach-xi.vercel.app/',
     github4: 'https://frontend-nine-dusky-21.vercel.app/',
-    summary: 'Currently a 4th-year B.Tech student at MTIET with a specialized focus on Full-Stack Web Development (React.js, Node.js, Next.js, Golang). Recognized for leading a team to 1st Prize at the HACKHOUSE 24-Hour Live Hackathon. Backed by 240+ hours of internship experience with industry leaders like AWS, Google, and Palo Alto Networks. Adept at engineering scalable solutions and utilizing Docker and CI/CD to deliver highly responsive applications in high-pressure professional environments.'
+    summary: 'Currently a 4th-year B.Tech student at MTIET with a specialized focus on Full-Stack Development, Data Engineering, and AI. Recognized for leading a team to 1st Prize at the HACKHOUSE 24-Hour Live Hackathon. Backed by 240+ hours of internship experience with industry leaders like AWS, Google, and Palo Alto Networks. Adept at engineering high-accuracy solutions and leveraging Elite+Silver NPTEL expertise to deliver scalable, data-driven applications in high-pressure professional environments.'
   });
 
   const [experience, setExperience] = useState([
@@ -73,8 +73,8 @@ export default function ResumeBuilder() {
     },
     {
       id: 2,
-      title: 'AWS Cloud & Gen AI Intern (240 Hours)',
-      company: 'AWS / AICTE',
+      title: 'AWS Gen AI & Cloud Eng. Intern (240 Hours)',
+      company: 'EduSkills & APSCHE',
       date: 'Aug - Oct 2024',
       description: 'Intensive internship focused on AWS services, Generative AI models, and cloud architecture. Built scalable AI solutions using AWS Bedrock and Lambda.'
     },
@@ -94,10 +94,10 @@ export default function ResumeBuilder() {
     },
     {
       id: 5,
-      title: 'Google Cloud Engineering Intern',
-      company: 'Google Cloud / AICTE',
+      title: 'AI-ML Virtual Intern (Grade: D)',
+      company: 'Google for Developers',
       date: 'July - Sep 2024',
-      description: 'Implemented cloud infrastructure solutions and learned about GCP big data services including BigQuery and Dataflow.'
+      description: 'Developed predictive models using TensorFlow and Google Cloud AI. Focused on automating data preprocessing and feature engineering.'
     },
     {
       id: 6,
@@ -105,6 +105,13 @@ export default function ResumeBuilder() {
       company: 'EduSkills Academy',
       date: 'April - June 2025',
       description: 'Focused on penetration testing, network security, and vulnerability assessment.'
+    },
+    {
+      id: 7,
+      title: 'Cybersecurity Intern (Grade: P)',
+      company: 'Palo Alto Networks',
+      date: 'April - June 2024',
+      description: 'Configured Next-Generation Firewalls and learned cloud security practices.'
     }
   ]);
 
@@ -114,43 +121,64 @@ export default function ResumeBuilder() {
       id: 1,
       degree: 'B.Tech in Artificial Intelligence & Data Science',
       school: 'MTIET / JNTUA',
-      grade: '8.60 CGPA (81.0%) | Currently 4th Year',
+      grade: '8.55 CGPA (80.5%) | Upto 3rd-2nd Sem',
       details: 'National Hackathon Champion; Focus on AI/ML and Full-Stack Engineering.'
     },
     {
       id: 2,
-      degree: 'Elite + Silver Certification in Industry 4.0 & IIoT',
-      school: 'NPTEL / IIT Kanpur',
-      grade: 'Grade: Elite+Silver',
-      details: 'Ranked in the top percentage of candidates nationwide.'
-    },
-    {
-      id: 3,
       degree: 'Intermediate / 12th Grade',
       school: 'Board of Intermediate Education, AP',
       grade: '946 / 1000 (94.6%)',
       details: ''
     },
     {
-      id: 4,
+      id: 3,
       degree: 'SSC / 10th Grade',
       school: 'Board of Secondary Education, AP',
       grade: '573 / 600 (95.5%)',
       details: ''
     },
     {
+      id: 4,
+      degree: 'Elite + Silver Certification in Industry 4.0 & IIoT',
+      school: 'NPTEL / IIT Kanpur',
+      grade: 'Score: 88 | Elite+Silver',
+      details: 'Ranked in the top percentage of candidates nationwide.'
+    },
+    {
       id: 5,
-      degree: 'Python for Data Science (edX)',
-      school: 'IBM / edX',
-      grade: 'Grade: Pass',
-      details: 'Certified in advanced Python data analysis and visualization.'
+      degree: 'NPTEL -- Quantum Computing',
+      school: 'IIT NPTEL',
+      grade: 'Score: 53% | Certified',
+      details: '4-week Online Course on Quantum Computing.'
     },
     {
       id: 6,
-      degree: 'Precision Engineering Certification',
-      school: 'CMTI, Bangalore',
-      grade: 'Grade: Pass',
-      details: 'Specialized training in high-accuracy engineering and manufacturing.'
+      degree: 'Problem Solving & Critical Thinking',
+      school: 'edX -- FullbridgeX',
+      grade: 'Grade: Pass | April 2024',
+      details: 'Certified in advanced analytical methodologies and soft skills.'
+    },
+    {
+      id: 7,
+      degree: 'Upper-Intermediate English',
+      school: 'edX -- UPValenciaX',
+      grade: 'Grade: Pass | April 2024',
+      details: 'Upper-Intermediate English for Business and Modern Life.'
+    },
+    {
+      id: 8,
+      degree: 'Infosys Springboard -- Fault Injection',
+      school: 'Infosys',
+      grade: 'Certified | Dec 2024',
+      details: 'Training in neural network architecture and fault injection.'
+    },
+    {
+      id: 9,
+      degree: 'National Building Code',
+      school: 'CMTI',
+      grade: 'Participated | March 2024',
+      details: 'Technical training and certification by CMTI.'
     }
   ]);
 
@@ -193,6 +221,56 @@ export default function ResumeBuilder() {
         'Full-stack e-commerce platform with secure authentication, cart management, and product listing.',
         'Developed using React.js, Node.js, Express.js, and MongoDB with JWT-based auth.',
         'Includes admin panel for product and order management with responsive UI design.'
+      ]
+    },
+    {
+      id: 5,
+      title: 'Invisible AI Overlay',
+      link: 'https://github.com/pmunaswamireddy/Invisible-ai',
+      bullets: [
+        'Stealth floating AI assistant for Windows 10/11 using native Win32 APIs for anti-screen capture rendering (OBS/Discord invisible) and bypassed focus click routing.',
+        'Features voice dictation threads, vision-based question detection (Llama 3.2 Vision via Groq/NVIDIA), and hardware typing character simulation.',
+        'Includes integrated incognito mini browser, daily quota trackers, and Authenticode self-signing bypasses.'
+      ]
+    },
+    {
+      id: 6,
+      title: 'Handwriting Keyboard',
+      link: 'https://github.com/pmunaswamireddy/HandWriting-keyboard',
+      bullets: [
+        'Cross-platform Handwriting IME keyboard app compiling drawn canvas characters into TrueType Font (.ttf) files.',
+        'Integrates Gemini-powered OCR processing, contour segmentation, and greedy bipartite reading-order matching for auto-extracting handwritten pages.',
+        'Supports dynamic next-word typing suggestions, swipe typing, voice input, and customizable themes.'
+      ]
+    },
+    {
+      id: 7,
+      title: 'Hand Gesture Control System',
+      link: 'https://github.com/pmunaswamireddy/Hand-Gesture-Control',
+      bullets: [
+        'Real-time computer vision system using OpenCV, MediaPipe Hands, and PyAutoGUI to control desktop cursor, clicks, and scrolls via hand gestures.',
+        'Features interactive Tkinter configuration GUI, calibration mode for high precision, and visual training simulations.',
+        'Bundled as a single-file executable using PyInstaller with customized version metadata.'
+      ]
+    },
+    {
+      id: 8,
+      title: 'Student Result Prediction System',
+      link: '',
+      bullets: [
+        'Machine Learning web application built using Streamlit, scikit-learn, Pandas, and NumPy to predict PASS/FAIL outcomes.',
+        'Trained a Logistic Regression binary classifier on a synthetic dataset of 500 records, achieving 98.00% accuracy and 100.00% recall.',
+        'Includes interactive dashboards for Seaborn feature importance heatmaps, Matplotlib data plots, and performance metrics.'
+      ]
+    },
+    {
+      id: 9,
+      title: 'Book Library API',
+      link: 'https://github.com/pmunaswamireddy/book-library-api',
+      bullets: [
+        'Full-stack Book Management System using FastAPI, SQLAlchemy (SQLite), and a modern glassmorphic web dashboard.',
+        'Supports custom book covers, genre tagging, dynamic stats tracking, advanced filtering, and full CRUD endpoints.',
+        'Features built-in CORS security policies, input validation, and absolute file path configurations.'
       ]
     }
   ]);
