@@ -3,15 +3,27 @@
 import React, { useState, useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { 
-  Code, Mail, Phone, MapPin, Globe, Award, Briefcase, GraduationCap, 
+  Code, Mail, Phone, MapPin, Globe, Briefcase, GraduationCap, 
   ExternalLink, Sparkles, Copy, Check, Cpu, Terminal, 
-  Download, ArrowUpRight, ShieldCheck, Trophy, ChevronRight, X, Laptop, Edit2
+  Download, ArrowUpRight, ShieldCheck, Trophy, X, Laptop, Edit2
 } from 'lucide-react';
+
+interface ProjectItem {
+  id: number;
+  title: string;
+  category: string;
+  badge: string;
+  link: string;
+  github: string;
+  stack: string[];
+  summary: string;
+  bullets: string[];
+}
 
 export default function MadhuPortfolio() {
   const printRef = useRef<HTMLDivElement>(null);
   const [copiedText, setCopiedText] = useState<string | null>(null);
-  const [selectedProject, setSelectedProject] = useState<any | null>(null);
+  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
