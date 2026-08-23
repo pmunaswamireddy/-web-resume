@@ -1,683 +1,579 @@
-"use client";
+"use client"; // Force Update: 2026-03-09
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import { 
-  Code, Mail, Phone, MapPin, Globe, Briefcase, GraduationCap, 
-  ExternalLink, Sparkles, Copy, Check, Cpu, Terminal, 
-  Download, ArrowUpRight, ShieldCheck, Trophy, X, Laptop, Edit2, Star
-} from 'lucide-react';
+import Image from 'next/image';
+import { Camera, Upload, Plus, Trash2, Printer, Edit2, Check } from 'lucide-react';
 
-interface ProjectItem {
-  id: number;
-  title: string;
-  category: string;
-  badge: string;
-  link: string;
-  github: string;
-  stack: string[];
-  summary: string;
-  bullets: string[];
-}
-
-export default function MadhuPortfolio() {
-  const printRef = useRef<HTMLDivElement>(null);
-  const [copiedText, setCopiedText] = useState<string | null>(null);
-  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
-  const [activeCategory, setActiveCategory] = useState<string>('All');
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+export default function ResumeBuilder() {
+  const [isEditing, setIsEditing] = useState(false);
+  const printRef = useRef(null);
 
   const handlePrint = useReactToPrint({
     contentRef: printRef,
-    documentTitle: 'Penumuru_Madhu_Sudhan_Reddy_Resume',
+    documentTitle: 'Madhu_Sudhan_Reddy_Resume',
   });
 
-  const copyToClipboard = (text: string, label: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedText(label);
-    setTimeout(() => setCopiedText(null), 2500);
+  // Interfaces for Type Safety
+  interface Experience { id: number; title: string; company: string; date: string; description: string; }
+  interface Education { id: number; degree: string; school: string; grade: string; details: string; }
+  interface Project { id: number; title: string; link: string; bullets: string[]; }
+  interface Skill { id: number; category: string; items: string; }
+
+  // Default Data State
+  const [profileImg, setProfileImg] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') return localStorage.getItem('resume_profileImg');
+    return null;
+  });
+  const [photoOffsetY, setPhotoOffsetY] = useState(() => {
+    if (typeof window !== 'undefined') return Number(localStorage.getItem('resume_photoOffsetY')) || 25;
+    return 25;
+  });
+
+  // Keep localStorage in sync when state changes
+  useEffect(() => {
+    if (profileImg) localStorage.setItem('resume_profileImg', profileImg);
+    else localStorage.removeItem('resume_profileImg');
+  }, [profileImg]);
+
+  useEffect(() => {
+    localStorage.setItem('resume_photoOffsetY', String(photoOffsetY));
+  }, [photoOffsetY]);
+
+  const saveProfileImg = (img: string | null) => {
+    setProfileImg(img);
+    if (img) localStorage.setItem('resume_profileImg', img);
+    else localStorage.removeItem('resume_profileImg');
   };
 
+  const saveOffsetY = (val: number) => {
+    setPhotoOffsetY(val);
+    localStorage.setItem('resume_photoOffsetY', String(val));
+  };
+  
   const [basicInfo, setBasicInfo] = useState({
     name: 'Penumuru Madhu Sudhan Reddy',
-    role: 'Software Engineer | AI & Data Science Student',
+    title: 'Software Engineer | AI & Data Science Student',
     email: 'pmrpmadhusudhanreddy@gmail.com',
     phone: '+91 7672082814',
     location: 'Palamaner, AP, India',
-    github: 'https://github.com/pmunaswamireddy',
-    linkedin: 'https://linkedin.com/in/penumuru-madhu-sudhan-reddy-942550390',
-    portfolio: 'https://web-resume-peach-xi.vercel.app/',
-    livedemo: 'https://frontend-nine-dusky-21.vercel.app/',
+    github1: 'https://github.com/pmunaswamireddy',
+    github2: 'https://linkedin.com/in/penumuru-madhu-sudhan-reddy-942550390',
+    github3: 'https://web-resume-peach-xi.vercel.app/',
+    github4: 'https://frontend-nine-dusky-21.vercel.app/',
     summary: 'Enthusiastic B.Tech student in Artificial Intelligence & Data Science (8.55 CGPA) and 1st Prize Winner at HACKHOUSE 24-Hour Live Hackathon. Skilled in low-latency desktop/system applications (Python, Win32 API, CustomTkinter), full-stack Web APIs (React, FastAPI, Node.js), and AI vision systems (Llama 3.2 Vision, OpenCV). Proven technical leader with 240+ hours of industry-backed cloud & data engineering training across AWS and Google programs.'
   });
 
-  const metrics = [
-    { label: 'Hackathon Champion', value: '1st Prize (₹8,000)', sub: 'HACKHOUSE 24-Hour Live Hackathon', icon: Trophy, color: 'text-amber-400', bg: 'bg-amber-500/10 border-amber-500/30' },
-    { label: 'B.Tech CGPA', value: '8.55', sub: '80.5% | Top Academic Record', icon: GraduationCap, color: 'text-teal-400', bg: 'bg-teal-500/10 border-teal-500/30' },
-    { label: 'NPTEL Elite+Silver', value: '88%', sub: 'Industry 4.0 & IIoT | IIT NPTEL', icon: ShieldCheck, color: 'text-cyan-400', bg: 'bg-cyan-500/10 border-cyan-500/30' },
-    { label: 'Cloud Training', value: '240+ Hours', sub: 'AWS Cloud & Gen AI Internship', icon: Briefcase, color: 'text-indigo-400', bg: 'bg-indigo-500/10 border-indigo-500/30' }
-  ];
-
-  const projects: ProjectItem[] = [
+  const [experience, setExperience] = useState([
     {
       id: 1,
-      title: 'Elderly Guardian AI Platform',
-      category: 'Web & AI',
-      badge: 'Live Web App',
+      title: '1st Prize (Rs. 8,000) -- HACKHOUSE 24-Hour Live Hackathon',
+      company: 'Vaultsphere AI & MTIET',
+      date: 'Dec 2025',
+      description: 'Won 1st prize in a 24-hour live hackathon building scalable AI and web solutions.'
+    },
+    {
+      id: 2,
+      title: 'AWS Gen AI & Cloud Eng. (240 Hours)',
+      company: 'EduSkills & APSCHE',
+      date: 'Long-Term Internship',
+      description: 'Completed 240+ hours of intensive cloud and generative AI engineering.'
+    },
+    {
+      id: 3,
+      title: 'Full Stack Web Development Intern',
+      company: 'Gen Proces',
+      date: 'July 2025 (2 Months)',
+      description: 'Built responsive web applications and full-stack API integrations.'
+    },
+    {
+      id: 4,
+      title: 'AI-ML Virtual Internship (Grade: D)',
+      company: 'Google for Developers',
+      date: 'July -- Sep 2024',
+      description: 'Hands-on training in machine learning models and computer vision pipelines.'
+    }
+  ]);
+
+  const [education, setEducation] = useState([
+    {
+      id: 1,
+      degree: 'B.Tech -- AI & Data Science',
+      school: 'Mother Theresa Institute of Engineering and Technology',
+      grade: '8.55 CGPA (80.5%)',
+      details: 'Currently Pursuing (4th Year B.Tech) | 2023 -- 2027'
+    },
+    {
+      id: 2,
+      degree: 'Intermediate -- MPC (Mathematics, Physics, Chemistry)',
+      school: 'Board of Intermediate Education, AP (Vivekananda Jr College)',
+      grade: '946 / 1000 (94.6%)',
+      details: 'Completed (2021 -- 2023)'
+    },
+    {
+      id: 3,
+      degree: 'SSC / 10th Grade',
+      school: 'Board of Secondary Education, AP (ZP High School, Karasanapalle)',
+      grade: '573 / 600 (95.5%)',
+      details: 'Completed (June 2021)'
+    },
+    {
+      id: 4,
+      degree: 'NPTEL Industry 4.0 & IIoT (12-Week)',
+      school: 'IIT NPTEL',
+      grade: 'Score: 88% (Elite+Silver)',
+      details: '12-Week NPTEL certification course.'
+    },
+    {
+      id: 5,
+      degree: 'NPTEL Quantum Computing (4-Week)',
+      school: 'IIT NPTEL',
+      grade: 'Score: 53% (Certified)',
+      details: 'Certified in Quantum Computing basics.'
+    },
+    {
+      id: 6,
+      degree: 'Problem Solving & Critical Thinking',
+      school: 'edX -- FullbridgeX',
+      grade: 'Grade: Pass | April 2024',
+      details: 'Soft skills & critical problem solving methodology.'
+    },
+    {
+      id: 7,
+      degree: 'Upper-Intermediate English',
+      school: 'edX -- UPValenciaX',
+      grade: 'Grade: Pass | April 2024',
+      details: 'Business English and professional communication.'
+    }
+  ]);
+
+  const [projects, setProjects] = useState([
+    {
+      id: 1,
+      title: 'Elderly Guardian AI',
       link: 'https://frontend-nine-dusky-21.vercel.app/',
-      github: 'https://github.com/pmunaswamireddy',
-      stack: ['React', 'FastAPI', 'Python', 'Scikit-learn', 'Vercel'],
-      summary: 'ML-powered web platform for remote elderly health monitoring and emergency alert notifications with real-time AI anomaly detection.',
       bullets: [
-        'Built a full-stack health telemetry web platform connecting caregivers with real-time patient status.',
-        'Engineered a FastAPI backend running machine learning anomaly detection on physiological sensor streams.',
-        'Integrated automated SMS/Email emergency alert dispatches upon critical threshold breaches.',
-        'Deployed live on Vercel with high-availability RESTful API endpoint architecture.'
+        'ML-powered web platform for remote elderly health monitoring and emergency alert system.',
+        'Built with React frontend and FastAPI backend; deployed live on Vercel with real-time AI anomaly detection.'
       ]
     },
     {
       id: 2,
       title: 'Invisible AI Overlay',
-      category: 'AI & Vision',
-      badge: 'Win32 System App',
       link: 'https://github.com/pmunaswamireddy/Invisible-ai',
-      github: 'https://github.com/pmunaswamireddy/Invisible-ai',
-      stack: ['Python', 'Win32 API', 'Groq API', 'Llama 3.2 Vision', 'CustomTkinter'],
-      summary: 'Stealth floating AI desktop assistant utilizing native Win32 APIs for anti-screen capture rendering and vision-based question detection.',
       bullets: [
-        'Engineered a floating stealth desktop assistant bypassing screen capture recording software via native Win32 APIs.',
-        'Integrates Llama 3.2 Vision via Groq for instant optical question solving from desktop regions.',
-        'Simulates hardware keystrokes using SendInput API for seamless character typing injection.',
-        'Features background voice dictation threads, incognito browser overlays, and daily quota management.'
+        'Engineered a stealth floating AI desktop assistant using native Win32 APIs for anti-screen capture rendering.',
+        'Integrated vision-based question detection via Groq/NVIDIA Llama 3.2 Vision and hardware typing simulation via SendInput.'
       ]
     },
     {
       id: 3,
       title: 'Scrcpy Master Control',
-      category: 'Desktop Systems',
-      badge: 'ADB Management GUI',
       link: 'https://github.com/pmunaswamireddy/scrcpy-master-control.git',
-      github: 'https://github.com/pmunaswamireddy/scrcpy-master-control.git',
-      stack: ['Python', 'CustomTkinter', 'ADB', 'Tailscale', 'Multithreading'],
-      summary: 'Advanced Windows GUI for low-latency screen mirroring and batch control of multiple Android devices via ADB and Tailscale.',
       bullets: [
-        'Designed a multi-threaded Windows control hub for simultaneous ADB Android device management.',
-        'Supports wireless QR Code/mDNS pairing, Tailscale remote IP tunneling, and batch broadcast mode.',
-        'Built a background-buffered UI queue preventing UI lockup during high-rate ADB stream commands.'
+        'Built an advanced Windows GUI for low-latency mirroring and batch wireless pairing/control of multiple Android devices.',
+        'Designed a background-buffered UI queue ensuring zero lag and integrated Tailscale for remote wireless management.'
       ]
     },
     {
       id: 4,
       title: 'JNTUA Calculator & OCR App',
-      category: 'Mobile & OCR',
-      badge: 'Android APK',
       link: 'https://github.com/pmunaswamireddy/-jntua-calculator.git',
-      github: 'https://github.com/pmunaswamireddy/-jntua-calculator.git',
-      stack: ['Java', 'Kotlin', 'Android SDK', 'Google ML Kit', 'OCR'],
-      summary: 'Android mobile app tailored to JNTUA R23 regulations featuring automated SGPA/CGPA calculation and AI-powered OCR mark sheet extraction.',
       bullets: [
-        'Developed a native Android app providing accurate GPA/CGPA computation for JNTUA engineering students.',
-        'Integrated Google ML Kit OCR to automatically parse grades directly from mark sheet photos and PDF files.',
-        'Reduces manual grade entry effort to zero with smart regex pattern matching.'
+        'Developed an Android app calculating SGPA, CGPA, and percentage tailored to JNTUA R23 regulations.',
+        'Implemented Google ML Kit OCR to automatically extract grades from mark sheet images/PDFs with high accuracy.'
       ]
     }
-  ];
+  ]);
 
-  const experience = [
-    {
-      id: 1,
-      role: '1st Prize Winner (Rs. 8,000) -- Live Hackathon',
-      company: 'HACKHOUSE 24-Hour Live Hackathon (Vaultsphere AI & MTIET)',
-      period: 'Dec 26-27, 2025',
-      grade: '1st Rank Champions',
-      description: 'Led a 4-member development team to victory in a 24-hour national hackathon, building a complete full-stack web and AI application under strict deadline pressures.'
-    },
-    {
-      id: 2,
-      role: 'AWS Gen AI & Cloud Engineering Intern (240 Hours)',
-      company: 'EduSkills & APSCHE',
-      period: 'Aug – Oct 2024',
-      grade: 'Completed (240 Hrs)',
-      description: 'Intensive long-term internship mastering AWS Bedrock, Lambda, S3, and cloud generative AI deployment pipelines.'
-    },
-    {
-      id: 3,
-      role: 'Full Stack Web Development Intern',
-      company: 'Gen Proces',
-      period: 'July 2025 (2 Months)',
-      grade: 'Completed',
-      description: 'Built and maintained responsive web applications, implemented RESTful API endpoints, and optimized database queries.'
-    },
-    {
-      id: 4,
-      role: 'AI-ML Virtual Internship',
-      company: 'Google for Developers',
-      period: 'July – Sep 2024',
-      grade: 'Grade: D',
-      description: 'Hands-on project work in computer vision pipelines, feature engineering, and model validation with TensorFlow.'
+  const [skills, setSkills] = useState([
+    { id: 1, category: 'Programming Languages', items: 'Python, Java, C, JavaScript, SQL, Prompt Engineering' },
+    { id: 2, category: 'Web & Frameworks', items: 'React.js, Node.js, HTML5/CSS3' },
+    { id: 3, category: 'AI, ML & Data Science', items: 'Scikit-learn, PyTorch, OpenCV, MediaPipe, MongoDB, LangChain' },
+    { id: 4, category: 'Tools & Platforms', items: 'Git, GitHub, VS Code, Antigravity IDE' },
+    { id: 5, category: 'Core Competencies', items: 'Problem Solving, Leadership Skills, Technical Communication, Adaptability' }
+  ]);
+
+
+  // Handlers for Images
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        saveProfileImg(reader.result as string);
+      };
+      reader.readAsDataURL(file);
     }
-  ];
+  };
 
-  const education = [
-    {
-      degree: 'B.Tech -- Artificial Intelligence & Data Science',
-      institution: 'Mother Theresa Institute of Engineering and Technology (MTIET)',
-      period: '2023 – 2027 | Currently Pursuing (4th Year B.Tech)',
-      score: '8.55 CGPA (80.5%)',
-      details: 'Focus on System Programming, Machine Learning, Full-Stack Web Development, and Data Engineering.'
-    },
-    {
-      degree: 'Intermediate -- MPC (Mathematics, Physics, Chemistry)',
-      institution: 'Board of Intermediate Education, AP (Vivekananda Jr College)',
-      period: '2021 – 2023 | Completed',
-      score: '946 / 1000 (94.6%)',
-      details: 'Graduated with distinction in Mathematics, Physics, and Chemistry.'
-    },
-    {
-      degree: 'Secondary School Certificate (SSC / 10th Grade)',
-      institution: 'Board of Secondary Education, AP (ZP High School, Karasanapalle)',
-      period: 'Passed June 2021 | Completed',
-      score: '573 / 600 (95.5%)',
-      details: 'Achieved top marks in Mathematics and General Science.'
+  const captureCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const video = document.createElement('video');
+      video.srcObject = stream;
+      video.play();
+      setTimeout(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d')?.drawImage(video, 0, 0);
+        saveProfileImg(canvas.toDataURL('image/jpeg'));
+        stream.getTracks().forEach(track => track.stop());
+      }, 1500);
+    } catch {
+      alert("Could not access camera. Please check permissions.");
     }
-  ];
+  };
 
-  const skillCategories = [
-    {
-      title: 'Programming Languages',
-      icon: Terminal,
-      skills: ['Python', 'Java', 'C', 'JavaScript', 'SQL', 'Prompt Engineering']
-    },
-    {
-      title: 'Web & Frameworks',
-      icon: Laptop,
-      skills: ['React.js', 'Node.js', 'FastAPI', 'HTML5/CSS3', 'REST APIs']
-    },
-    {
-      title: 'AI, ML & Data Science',
-      icon: Cpu,
-      skills: ['Scikit-learn', 'PyTorch', 'OpenCV', 'MediaPipe', 'MongoDB', 'LangChain']
-    },
-    {
-      title: 'Tools & Platforms',
-      icon: Sparkles,
-      skills: ['Git', 'GitHub', 'VS Code', 'Win32 API', 'Tailscale', 'Antigravity IDE']
-    }
-  ];
+  // Handlers for Add/Remove
+  const addExperience = () => setExperience([...experience, { id: Date.now(), title: '', company: '', date: '', description: '' }]);
+  const removeExperience = (id: number) => setExperience(experience.filter(e => e.id !== id));
+  
+  const addEducation = () => setEducation([...education, { id: Date.now(), degree: '', school: '', grade: '', details: '' }]);
+  const removeEducation = (id: number) => setEducation(education.filter(e => e.id !== id));
+  
+  const addProject = () => setProjects([...projects, { id: Date.now(), title: '', link: '', bullets: [''] }]);
+  const removeProject = (id: number) => setProjects(projects.filter(p => p.id !== id));
+  const updateProjectBullet = (projectId: number, bulletIndex: number, value: string) => {
+    setProjects(projects.map((p: Project) => {
+      if (p.id === projectId) {
+        const newBullets = [...p.bullets];
+        newBullets[bulletIndex] = value;
+        return { ...p, bullets: newBullets };
+      }
+      return p;
+    }));
+  };
+  const addProjectBullet = (projectId: number) => {
+    setProjects(projects.map((p: Project) => p.id === projectId ? { ...p, bullets: [...p.bullets, ''] } : p));
+  };
 
-  const certifications = [
-    { title: 'NPTEL Industry 4.0 & IIoT (12-Week)', issuer: 'IIT NPTEL', badge: 'Score: 88% (Elite+Silver)' },
-    { title: 'NPTEL Quantum Computing (4-Week)', issuer: 'IIT NPTEL', badge: 'Score: 53% (Certified)' },
-    { title: 'Problem Solving & Critical Thinking', issuer: 'edX -- FullbridgeX', badge: 'Grade: Pass | April 2024' },
-    { title: 'Upper-Intermediate English', issuer: 'edX -- UPValenciaX', badge: 'Grade: Pass | April 2024' }
-  ];
-
-  const filteredProjects = activeCategory === 'All' 
-    ? projects 
-    : projects.filter(p => p.category.includes(activeCategory));
+  const addSkill = () => setSkills([...skills, { id: Date.now(), category: '', items: '' }]);
+  const removeSkill = (id: number) => setSkills(skills.filter((s: Skill) => s.id !== id));
 
   return (
-    <div className="min-h-screen bg-ambient-teal text-slate-100 selection:bg-teal-400 selection:text-black relative">
-      
-      {/* Toast Notification */}
-      {copiedText && (
-        <div className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 px-5 py-3 rounded-xl font-bold shadow-2xl flex items-center gap-2 animate-bounce">
-          <Check size={18}/> Copied {copiedText} to clipboard!
-        </div>
-      )}
+    <div className="min-h-screen bg-[#0b0c10] text-[#c5c6c7]">
+      {/* Floating Action Controls Removed */}
 
-      {/* Glowing Ambient Spheres */}
-      <div className="glow-orb-teal w-[600px] h-[600px] bg-teal-500/20 top-[-100px] left-[-100px]" />
-      <div className="glow-orb-teal w-[650px] h-[650px] bg-cyan-500/15 bottom-[5%] right-[-100px]" />
-
-      {/* Sticky Navbar */}
-      <nav className="sticky top-0 z-40 bg-[#060a12]/85 backdrop-blur-xl border-b border-teal-500/20 px-6 py-4 print:hidden">
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-400 to-cyan-500 text-slate-950 font-black text-lg flex items-center justify-center shadow-lg shadow-teal-500/25">
-              MR
-            </div>
-            <div>
-              <div className="font-bold text-white leading-tight text-base font-heading">Penumuru Madhu Sudhan Reddy</div>
-              <div className="text-xs text-amber-400 flex items-center gap-1.5 font-medium">
-                <Trophy size={12}/> HACKHOUSE 1st Prize Winner
-              </div>
-            </div>
-          </div>
-
-          <div className="hidden lg:flex items-center gap-7 text-sm font-medium text-slate-300">
-            <a href="#about" className="hover:text-teal-400 transition-colors">About</a>
-            <a href="#projects" className="hover:text-teal-400 transition-colors">Projects</a>
-            <a href="#skills" className="hover:text-teal-400 transition-colors">Skills</a>
-            <a href="#experience" className="hover:text-teal-400 transition-colors">Experience</a>
-            <a href="#education" className="hover:text-teal-400 transition-colors">Education</a>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={() => setIsEditing(!isEditing)}
-              className="px-3.5 py-2 rounded-xl bg-slate-900 text-teal-400 border border-teal-500/30 text-xs font-semibold hover:bg-slate-800 transition-all flex items-center gap-1.5"
-            >
-              {isEditing ? <Check size={14}/> : <Edit2 size={14}/>}
-              {isEditing ? 'Done' : 'Edit'}
-            </button>
-            <button 
-              onClick={() => handlePrint()}
-              className="btn-teal text-xs flex items-center gap-2 uppercase tracking-wider"
-            >
-              <Download size={14}/> Download PDF
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Main Content Container */}
-      <main ref={printRef} className="max-w-6xl mx-auto px-6 py-12 flex flex-col gap-24 relative z-10">
+      <main ref={printRef} className="container mx-auto max-w-[1000px] px-6 py-12 flex flex-col gap-12 pdf-container">
         
-        {/* HERO SECTION */}
-        <section id="about" className="flex flex-col gap-8 pt-4">
-          <div className="flex flex-col gap-5 max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-300 text-xs font-semibold uppercase tracking-wider w-fit shadow-inner">
-              <Trophy size={14} className="text-amber-400"/> Hackathon Winner • Navy & Teal Theme
-            </div>
+        {/* Hero Section */}
+        <section className={`hero text-center flex flex-col relative items-center ${isEditing ? 'border border-dashed border-[#45a29e] p-6 rounded-xl bg-[#1f2833] bg-opacity-30' : ''}`}>
+          
 
+
+          {isEditing ? (
+            <div className="w-full max-w-2xl flex flex-col gap-4 mt-6">
+              <input value={basicInfo.name} onChange={e => setBasicInfo({...basicInfo, name: e.target.value})} className="text-4xl font-bold bg-transparent border-b-2 border-[#45a29e] text-center text-white focus:outline-none focus:border-[#66fcf1] pb-2 w-full" placeholder="Full Name" />
+              <input value={basicInfo.title} onChange={e => setBasicInfo({...basicInfo, title: e.target.value})} className="text-2xl text-center text-[#66fcf1] bg-transparent border-b-2 border-[#45a29e] focus:outline-none focus:border-[#66fcf1] pb-2 w-full" placeholder="Professional Title" />
+              <div className="grid grid-cols-2 gap-4 mt-2 text-base">
+                <input value={basicInfo.email} onChange={e => setBasicInfo({...basicInfo, email: e.target.value})} className="bg-[#1f2833] p-3 rounded-lg text-[#c5c6c7] border border-transparent focus:border-[#66fcf1] outline-none text-base" placeholder="Email" />
+                <input value={basicInfo.phone} onChange={e => setBasicInfo({...basicInfo, phone: e.target.value})} className="bg-[#1f2833] p-3 rounded-lg text-[#c5c6c7] border border-transparent focus:border-[#66fcf1] outline-none text-base" placeholder="Phone" />
+                <input value={basicInfo.github1} onChange={e => setBasicInfo({...basicInfo, github1: e.target.value})} className="bg-[#1f2833] p-3 rounded-lg text-[#c5c6c7] border border-transparent focus:border-[#66fcf1] outline-none text-base" placeholder="GitHub 1" />
+                <input value={basicInfo.github2} onChange={e => setBasicInfo({...basicInfo, github2: e.target.value})} className="bg-[#1f2833] p-3 rounded-lg text-[#c5c6c7] border border-transparent focus:border-[#66fcf1] outline-none text-base" placeholder="GitHub 2" />
+                <input value={basicInfo.github3} onChange={e => setBasicInfo({...basicInfo, github3: e.target.value})} className="bg-[#1f2833] p-3 rounded-lg text-[#c5c6c7] border border-transparent focus:border-[#66fcf1] outline-none text-base" placeholder="Project Portfolio" />
+                <input value={basicInfo.github4} onChange={e => setBasicInfo({...basicInfo, github4: e.target.value})} className="bg-[#1f2833] p-3 rounded-lg text-[#c5c6c7] border border-transparent focus:border-[#66fcf1] outline-none text-base" placeholder="Live Deployment" />
+              </div>
+            </div>
+          ) : (
+            <>
+              {basicInfo.name && <h1>{basicInfo.name}</h1>}
+              {basicInfo.title && <div className="subtitle">{basicInfo.title}</div>}
+              <div className="contact-links">
+                {basicInfo.email && <a href={`mailto:${basicInfo.email}`}>{basicInfo.email}</a>}
+                {basicInfo.phone && <a href={`tel:${basicInfo.phone}`}>{basicInfo.phone}</a>}
+                {basicInfo.github1 && <a href={basicInfo.github1} target="_blank" rel="noopener noreferrer">{basicInfo.github1.replace('https://', '').replace('github.com/', 'GH: ')}</a>}
+                {basicInfo.github2 && <a href={basicInfo.github2} target="_blank" rel="noopener noreferrer">{basicInfo.github2.replace('https://', '').replace('github.com/', 'GH: ')}</a>}
+                {basicInfo.github3 && <a href={basicInfo.github3} target="_blank" rel="noopener noreferrer">Portfolio</a>}
+                {basicInfo.github4 && <a href={basicInfo.github4} target="_blank" rel="noopener noreferrer">Live Demo</a>}
+              </div>
+            </>
+          )}
+        </section>
+
+        {/* About Section */}
+        {(isEditing || basicInfo.summary) && (
+          <section className="card relative group">
+            <h2>Professional Summary</h2>
             {isEditing ? (
-              <div className="flex flex-col gap-3 card-teal p-6 border-dashed border-teal-400">
-                <input 
-                  value={basicInfo.name} 
-                  onChange={e => setBasicInfo({...basicInfo, name: e.target.value})} 
-                  className="text-3xl font-bold bg-slate-900 p-2 rounded text-white border border-teal-400"
-                />
-                <input 
-                  value={basicInfo.role} 
-                  onChange={e => setBasicInfo({...basicInfo, role: e.target.value})} 
-                  className="text-base bg-slate-900 p-2 rounded text-teal-400 border border-teal-400"
-                />
-                <textarea 
-                  value={basicInfo.summary} 
-                  onChange={e => setBasicInfo({...basicInfo, summary: e.target.value})} 
-                  className="text-sm bg-slate-900 p-3 rounded text-slate-200 border border-teal-400 min-h-[100px]"
-                />
-              </div>
+              <textarea 
+                value={basicInfo.summary}
+                onChange={e => setBasicInfo({...basicInfo, summary: e.target.value})}
+                className="w-full bg-[#1f2833] p-5 rounded-xl text-[#c5c6c7] border border-transparent focus:border-[#66fcf1] outline-none min-h-[180px] resize-y text-base leading-relaxed"
+                placeholder="Write a short summary about your professional background and goals..."
+              />
             ) : (
-              <>
-                <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight gradient-text-teal font-heading">
-                  Penumuru Madhu Sudhan Reddy
-                </h1>
-
-                <div className="text-teal-400 text-xl font-semibold flex items-center gap-2">
-                  <Star size={18} className="text-cyan-400"/> {basicInfo.role}
-                </div>
-
-                <p className="text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
-                  {basicInfo.summary}
-                </p>
-              </>
+              <p>{basicInfo.summary}</p>
             )}
+          </section>
+        )}
 
-            {/* Quick Contact Chips */}
-            <div className="flex flex-wrap items-center gap-3 pt-3 print:hidden">
-              <button 
-                onClick={() => copyToClipboard(basicInfo.email, 'Email')}
-                className="pill-teal flex items-center gap-2 cursor-pointer"
-              >
-                <Mail size={14} className="text-teal-400"/> {basicInfo.email} <Copy size={12}/>
-              </button>
-
-              <button 
-                onClick={() => copyToClipboard(basicInfo.phone, 'Phone')}
-                className="pill-teal flex items-center gap-2 cursor-pointer"
-              >
-                <Phone size={14} className="text-teal-400"/> {basicInfo.phone} <Copy size={12}/>
-              </button>
-
-              <a 
-                href={basicInfo.github} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="pill-teal flex items-center gap-2 cursor-pointer"
-              >
-                <Code size={14} className="text-teal-400"/> GitHub <ExternalLink size={12}/>
-              </a>
-
-              <a 
-                href={basicInfo.linkedin} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="pill-teal flex items-center gap-2 cursor-pointer"
-              >
-                <Globe size={14} className="text-teal-400"/> LinkedIn <ExternalLink size={12}/>
-              </a>
-
-              <a 
-                href={basicInfo.livedemo} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="pill-teal flex items-center gap-2 cursor-pointer"
-              >
-                <Laptop size={14} className="text-teal-400"/> Live App <ExternalLink size={12}/>
-              </a>
-
-              <div className="pill-teal flex items-center gap-2 cursor-default">
-                <MapPin size={14} className="text-teal-400"/> {basicInfo.location}
-              </div>
-            </div>
-          </div>
-
-          {/* 4 METRICS CARDS */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
-            {metrics.map((m, idx) => (
-              <div key={idx} className="card-teal p-6 flex flex-col justify-between gap-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-400 text-xs font-semibold uppercase tracking-wider">{m.label}</span>
-                  <div className={`p-2 rounded-lg ${m.bg}`}>
-                    <m.icon size={18} className={m.color}/>
-                  </div>
-                </div>
-                <div>
-                  <div className={`text-2xl sm:text-3xl font-extrabold tracking-tight font-heading ${m.color}`}>{m.value}</div>
-                  <div className="text-slate-400 text-xs mt-1 font-medium">{m.sub}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* HACKHOUSE WINNER BANNER */}
-        <section className="card-teal p-8 border-l-4 border-l-amber-400 bg-gradient-to-r from-amber-500/10 via-slate-900/90 to-teal-500/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div className="flex items-center gap-5">
-            <div className="w-14 h-14 rounded-2xl bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
-              <Trophy size={30}/>
-            </div>
-            <div className="flex flex-col gap-1">
-              <span className="text-amber-400 text-xs font-extrabold uppercase tracking-wider">National Hackathon Champion</span>
-              <h3 className="text-2xl font-bold text-white font-heading">1st Prize Winner (₹8,000 Cash Award)</h3>
-              <p className="text-slate-300 text-sm leading-relaxed max-w-xl">
-                Led a team to victory at the HACKHOUSE 24-Hour Live Hackathon organized by Vaultsphere AI & MTIET, engineering a fully functional web & AI platform in 24 hours.
-              </p>
-            </div>
-          </div>
-          <span className="px-4 py-2 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-xs uppercase shrink-0">
-            Dec 26-27, 2025
-          </span>
-        </section>
-
-        {/* FEATURED PROJECTS */}
-        <section id="projects" className="flex flex-col gap-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-teal-500/20 pb-4">
-            <div>
-              <span className="text-teal-400 text-xs font-bold uppercase tracking-wider">Portfolio Showcase</span>
-              <h2 className="text-3xl font-bold text-white mt-1 font-heading">Featured Projects</h2>
-            </div>
-
-            {/* Filter Tabs */}
-            <div className="flex items-center gap-2 bg-slate-900/80 p-1.5 rounded-xl border border-teal-500/20">
-              {['All', 'AI & Vision', 'Desktop Systems', 'Web'].map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                    activeCategory === cat 
-                      ? 'bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 shadow-md' 
-                      : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  {cat}
+        {/* Experience Section */}
+        {(isEditing || experience.some(e => e.title || e.company)) && (
+          <section className="card relative">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="mb-0">Experience & Achievements</h2>
+              {isEditing && (
+                <button onClick={addExperience} className="text-[#66fcf1] flex items-center gap-2 hover:text-white text-base bg-[#1f2833] px-4 py-2 rounded-lg">
+                  <Plus size={20}/> Add Item
                 </button>
-              ))}
+              )}
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredProjects.map(project => (
-              <div 
-                key={project.id} 
-                className="card-teal p-6 flex flex-col justify-between gap-6 group"
-              >
-                <div className="flex flex-col gap-4">
-                  <div className="flex justify-between items-center">
-                    <span className="px-3 py-1 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/30 text-xs font-bold">
-                      {project.badge}
-                    </span>
-                    <ArrowUpRight size={18} className="text-slate-500 group-hover:text-teal-400 transition-colors"/>
+            
+            <div className="flex flex-col gap-6">
+              {experience.map((item: Experience, index: number) => {
+                if (!isEditing && !item.title && !item.company) return null;
+                
+                return isEditing ? (
+                  <div key={item.id} className="bg-[#1f2833] bg-opacity-50 p-4 rounded-lg relative border border-[#45a29e] border-opacity-30">
+                    <button onClick={() => removeExperience(item.id)} className="absolute top-4 right-4 text-red-400 hover:text-red-300"><Trash2 size={22}/></button>
+                    <div className="flex flex-col gap-3 pr-8">
+                      <input value={item.title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const newExp = [...experience]; newExp[index].title = e.target.value; setExperience(newExp);
+                      }} className="bg-transparent border-b border-[#45a29e] text-lg font-bold text-white outline-none w-full pb-1" placeholder="Job Title or Achievement" />
+                      <div className="grid grid-cols-2 gap-3">
+                        <input value={item.company} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          const newExp = [...experience]; newExp[index].company = e.target.value; setExperience(newExp);
+                        }} className="bg-[#0b0c10] p-2 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1]" placeholder="Company or Organization" />
+                        <input value={item.date} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          const newExp = [...experience]; newExp[index].date = e.target.value; setExperience(newExp);
+                        }} className="bg-[#0b0c10] p-2 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1]" placeholder="Date Range (e.g. Dec 2025)" />
+                      </div>
+                      <textarea value={item.description} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                        const newExp = [...experience]; newExp[index].description = e.target.value; setExperience(newExp);
+                      }} className="bg-[#0b0c10] p-3 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1] min-h-[80px]" placeholder="Description of your role and achievements..." />
+                    </div>
                   </div>
-
-                  <h3 className="text-xl font-bold text-white group-hover:text-teal-300 transition-colors font-heading">
-                    {project.title}
-                  </h3>
-
-                  <p className="text-slate-300 text-sm leading-relaxed">
-                    {project.summary}
-                  </p>
-                </div>
-
-                <div className="flex flex-col gap-4 pt-4 border-t border-teal-500/15">
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.stack.map((tech, i) => (
-                      <span key={i} className="px-2.5 py-1 rounded-md bg-slate-950/80 text-slate-300 text-xs font-medium border border-teal-500/20">
-                        {tech}
-                      </span>
-                    ))}
+                ) : (
+                  <div key={item.id} className="resume-item">
+                    <div className="resume-item-header">
+                      <div>
+                        {item.title && <h3>{item.title}</h3>}
+                        {item.company && <div className="text-sub">{item.company}</div>}
+                      </div>
+                      {item.date && <div className="text-sub">{item.date}</div>}
+                    </div>
+                    {item.description && <p>{item.description}</p>}
                   </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
-                  <div className="flex items-center gap-3 pt-2">
-                    <a 
-                      href={project.link} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="flex-1 py-2 rounded-lg bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 text-xs font-bold text-center hover:opacity-90 transition-opacity"
-                    >
-                      Live Demo / Link
-                    </a>
-                    <a 
-                      href={project.github} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="px-3 py-2 rounded-lg bg-slate-800 text-slate-200 text-xs font-bold hover:bg-slate-700 transition-colors"
-                    >
-                      GitHub
-                    </a>
-                    <button 
-                      onClick={() => setSelectedProject(project)}
-                      className="px-3 py-2 rounded-lg bg-teal-500/10 text-teal-400 border border-teal-500/20 text-xs font-bold hover:bg-teal-500/20 transition-colors"
-                      title="View Details"
-                    >
-                      Details
-                    </button>
+        {/* Education Section */}
+        {(isEditing || education.some(e => e.degree || e.school)) && (
+          <section className="card relative">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="mb-0">Education & Certifications</h2>
+              {isEditing && (
+                <button onClick={addEducation} className="text-[#66fcf1] flex items-center gap-2 hover:text-white text-base bg-[#1f2833] px-4 py-2 rounded-lg">
+                  <Plus size={20}/> Add Item
+                </button>
+              )}
+            </div>
+            
+            <div className="flex flex-col gap-6">
+              {isEditing ? (
+                // Editing View: Kept as standard forms for easy editing
+                education.map((item: Education, index: number) => {
+                  return (
+                    <div key={item.id} className="bg-[#1f2833] bg-opacity-50 p-4 rounded-lg relative border border-[#45a29e] border-opacity-30">
+                      <button onClick={() => removeEducation(item.id)} className="absolute top-4 right-4 text-red-400 hover:text-red-300"><Trash2 size={22}/></button>
+                      <div className="flex flex-col gap-3 pr-8">
+                        <input value={item.degree} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          const newEd = [...education]; newEd[index].degree = e.target.value; setEducation(newEd);
+                        }} className="bg-transparent border-b border-[#45a29e] text-lg font-bold text-white outline-none w-full pb-1" placeholder="Degree or Certification Name" />
+                        <input value={item.school} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          const newEd = [...education]; newEd[index].school = e.target.value; setEducation(newEd);
+                        }} className="bg-[#0b0c10] p-2 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1]" placeholder="Institution Name" />
+                        <input value={item.grade} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          const newEd = [...education]; newEd[index].grade = e.target.value; setEducation(newEd);
+                        }} className="bg-[#0b0c10] p-2 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1]" placeholder="Grade / GPA / Percentage" />
+                        <input value={item.details} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          const newEd = [...education]; newEd[index].details = e.target.value; setEducation(newEd);
+                        }} className="bg-[#0b0c10] p-2 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1]" placeholder="Additional details (optional)" />
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                // Preview/Read-Only View: Tabular Layout
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse border border-[#1f2833] mt-2">
+                    <thead>
+                      <tr className="bg-[#1f2833] text-[#66fcf1]">
+                        <th className="p-3 border border-[#1f2833]">Degree / Qualification</th>
+                        <th className="p-3 border border-[#1f2833]">Institution / Board</th>
+                        <th className="p-3 border border-[#1f2833]">Marks / Percentage</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {education.filter((e: Education) => e.degree || e.school || e.grade).map((item: Education) => (
+                        <tr key={item.id} className="border-b border-[#1f2833] hover:bg-[#1f2833] hover:bg-opacity-30 transition-colors">
+                          <td className="p-3 border-r border-[#1f2833] font-medium text-white">{item.degree}
+                            {item.details && <div className="text-xs text-[#8c9096] mt-1 font-normal break-words max-w-[250px]">{item.details}</div>}
+                          </td>
+                          <td className="p-3 border-r border-[#1f2833] text-[#c5c6c7]">{item.school}</td>
+                          <td className="p-3 text-[#66fcf1] font-semibold whitespace-nowrap">{item.grade}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* Projects Section */}
+        {(isEditing || projects.some(p => p.title)) && (
+          <section className="card relative">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="mb-0">Key Projects</h2>
+              {isEditing && (
+                <button onClick={addProject} className="text-[#66fcf1] flex items-center gap-2 hover:text-white text-base bg-[#1f2833] px-4 py-2 rounded-lg">
+                  <Plus size={20}/> Add Project
+                </button>
+              )}
+            </div>
+            
+            <div className="flex flex-col gap-6">
+              {projects.map((item: Project, index: number) => {
+                if (!isEditing && !item.title) return null;
+                
+                return isEditing ? (
+                  <div key={item.id} className="bg-[#1f2833] bg-opacity-50 p-4 rounded-lg relative border border-[#45a29e] border-opacity-30">
+                    <button onClick={() => removeProject(item.id)} className="absolute top-4 right-4 text-red-400 hover:text-red-300"><Trash2 size={16}/></button>
+                    <div className="flex flex-col gap-3 pr-8">
+                      <div className="grid grid-cols-2 gap-3">
+                        <input value={item.title} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          const newProj = [...projects]; newProj[index].title = e.target.value; setProjects(newProj);
+                        }} className="bg-transparent border-b border-[#45a29e] text-lg font-bold text-white outline-none w-full pb-1" placeholder="Project Name" />
+                        <input value={item.link} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                          const newProj = [...projects]; newProj[index].link = e.target.value; setProjects(newProj);
+                        }} className="bg-transparent border-b border-[#45a29e] text-sm text-[#66fcf1] outline-none w-full pb-1" placeholder="Project Link (Optional)" />
+                      </div>
+                      
+                      <div className="flex flex-col gap-2 mt-2">
+                        <span className="text-xs text-[#8c9096] uppercase tracking-wider">Bullet Points</span>
+                        {item.bullets.map((bullet: string, bIndex: number) => (
+                          <div key={bIndex} className="flex items-center gap-2">
+                            <span className="text-[#66fcf1] text-lg leading-none">•</span>
+                            <input 
+                              value={bullet} 
+                              onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateProjectBullet(item.id, bIndex, e.target.value)} 
+                              className="bg-[#0b0c10] p-2 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1] w-full" 
+                              placeholder="Project detail or achievement..." 
+                            />
+                            <button 
+                              onClick={() => {
+                                const newProj = [...projects];
+                                newProj[index].bullets = newProj[index].bullets.filter((_: string, i: number) => i !== bIndex);
+                                setProjects(newProj);
+                              }}
+                              className="text-red-400 hover:text-red-300 p-1"
+                            ><Trash2 size={14}/></button>
+                          </div>
+                        ))}
+                        <button onClick={() => addProjectBullet(item.id)} className="text-xs text-[#66fcf1] w-max mt-1 hover:underline flex items-center gap-1">
+                          <Plus size={12}/> Add Bullet Point
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* SKILLS MATRIX */}
-        <section id="skills" className="flex flex-col gap-6">
-          <div className="border-b border-teal-500/20 pb-4">
-            <span className="text-teal-400 text-xs font-bold uppercase tracking-wider">Technical Toolkit</span>
-            <h2 className="text-3xl font-bold text-white mt-1 font-heading">Skills & Competencies</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {skillCategories.map((cat, idx) => (
-              <div key={idx} className="card-teal p-6 flex flex-col gap-5">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-teal-500/15 text-teal-400 border border-teal-500/30">
-                    <cat.icon size={20}/>
+                ) : (
+                  <div key={item.id} className="resume-item">
+                    <div className="resume-item-header">
+                      <div>
+                        {item.title && <h3>{item.title}</h3>}
+                        {item.link && <div className="text-sub"><a href={item.link} target="_blank" rel="noopener noreferrer">{item.link}</a></div>}
+                      </div>
+                    </div>
+                    {item.bullets.filter((b: string) => b.trim() !== '').length > 0 && (
+                      <ul className="resume-list">
+                        {item.bullets.filter((b: string) => b.trim() !== '').map((bullet: string, idx: number) => (
+                          <li key={idx}>{bullet}</li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
-                  <h3 className="text-base font-bold text-white font-heading">{cat.title}</h3>
-                </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
-                <div className="flex flex-wrap gap-2">
-                  {cat.skills.map((skill, i) => (
-                    <span 
-                      key={i} 
-                      className="px-3 py-1.5 rounded-xl bg-slate-950/80 text-slate-200 border border-teal-500/20 text-xs font-semibold hover:border-teal-400 hover:text-teal-300 transition-colors cursor-default"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* INTERNSHIPS TIMELINE */}
-        <section id="experience" className="flex flex-col gap-6">
-          <div className="border-b border-teal-500/20 pb-4">
-            <span className="text-teal-400 text-xs font-bold uppercase tracking-wider">Industry Experience</span>
-            <h2 className="text-3xl font-bold text-white mt-1 font-heading">Internships & Achievements</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {experience.map(exp => (
-              <div key={exp.id} className="card-teal p-6 flex flex-col gap-4 border-l-4 border-l-teal-400">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-lg font-bold text-white font-heading">{exp.role}</h3>
-                    <div className="text-teal-400 text-xs font-semibold mt-0.5">{exp.company}</div>
+        {/* Skills Section */}
+        {(isEditing || skills.some(s => s.category || s.items)) && (
+          <section className="card relative">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="mb-0">Technical Skills</h2>
+              {isEditing && (
+                <button onClick={addSkill} className="text-[#66fcf1] flex items-center gap-2 hover:text-white text-base bg-[#1f2833] px-4 py-2 rounded-lg">
+                  <Plus size={20}/> Add Category
+                </button>
+              )}
+            </div>
+            
+            <div className="flex flex-col gap-6">
+              {skills.map((item: Skill, index: number) => {
+                if (!isEditing && !item.category && !item.items) return null;
+                
+                return isEditing ? (
+                  <div key={item.id} className="bg-[#1f2833] bg-opacity-50 p-4 rounded-lg relative border border-[#45a29e] border-opacity-30">
+                    <button onClick={() => removeSkill(item.id)} className="absolute top-4 right-4 text-red-400 hover:text-red-300"><Trash2 size={16}/></button>
+                    <div className="flex flex-col gap-3 pr-8">
+                      <input value={item.category} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const newSkills = [...skills]; newSkills[index].category = e.target.value; setSkills(newSkills);
+                      }} className="bg-transparent border-b border-[#45a29e] text-lg font-bold text-white outline-none w-full pb-1" placeholder="Skill Category (e.g. Languages)" />
+                      <input value={item.items} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const newSkills = [...skills]; newSkills[index].items = e.target.value; setSkills(newSkills);
+                      }} className="bg-[#0b0c10] p-2 rounded text-sm outline-none border border-transparent focus:border-[#66fcf1]" placeholder="Comma separated items (e.g. Python, Java, C++)" />
+                    </div>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-xs font-extrabold">
-                    {exp.grade}
-                  </span>
-                </div>
-
-                <p className="text-slate-300 text-sm leading-relaxed">
-                  {exp.description}
-                </p>
-
-                <div className="text-slate-400 text-xs font-medium pt-3 border-t border-teal-500/15 flex items-center justify-between">
-                  <span>Period: {exp.period}</span>
-                  <span className="text-slate-400">Verified Program</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ACADEMIC HISTORY */}
-        <section id="education" className="flex flex-col gap-6">
-          <div className="border-b border-teal-500/20 pb-4">
-            <span className="text-teal-400 text-xs font-bold uppercase tracking-wider">Academic Background</span>
-            <h2 className="text-3xl font-bold text-white mt-1 font-heading">Education</h2>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            {education.map((edu, idx) => (
-              <div key={idx} className="card-teal p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div className="flex flex-col gap-1 max-w-2xl">
-                  <h3 className="text-lg font-bold text-white font-heading">{edu.degree}</h3>
-                  <div className="text-teal-400 text-xs font-semibold">{edu.institution}</div>
-                  <p className="text-slate-300 text-sm mt-1">{edu.details}</p>
-                </div>
-
-                <div className="flex flex-col items-start md:items-end gap-1">
-                  <span className="text-2xl font-extrabold text-teal-400 tracking-tight font-heading">{edu.score}</span>
-                  <span className="text-slate-400 text-xs font-medium">{edu.period}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* CERTIFICATIONS GRID */}
-        <section id="certifications" className="flex flex-col gap-6">
-          <div className="border-b border-teal-500/20 pb-4">
-            <span className="text-teal-400 text-xs font-bold uppercase tracking-wider">Credentials & Courses</span>
-            <h2 className="text-3xl font-bold text-white mt-1 font-heading">Certifications</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-            {certifications.map((cert, idx) => (
-              <div key={idx} className="card-teal p-5 flex flex-col justify-between gap-4 border-l-4 border-l-teal-400">
-                <div className="flex flex-col gap-1">
-                  <h3 className="text-base font-bold text-white font-heading">{cert.title}</h3>
-                  <span className="text-slate-400 text-xs">{cert.issuer}</span>
-                </div>
-
-                <span className="px-3 py-1 rounded-md bg-teal-500/15 text-teal-300 border border-teal-500/30 text-xs font-bold w-fit">
-                  {cert.badge}
-                </span>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* FOOTER */}
-        <footer className="pt-10 border-t border-teal-500/20 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400">
-          <div>
-            © 2026 Penumuru Madhu Sudhan Reddy. Built with React 19, Next.js & Tailwind CSS.
-          </div>
-          <div className="flex gap-6 font-medium">
-            <a href={basicInfo.github} target="_blank" rel="noopener noreferrer" className="hover:text-teal-400">GitHub</a>
-            <a href={basicInfo.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-teal-400">LinkedIn</a>
-            <a href={basicInfo.portfolio} target="_blank" rel="noopener noreferrer" className="hover:text-teal-400">Portfolio Live</a>
-          </div>
-        </footer>
+                ) : (
+                  <div key={item.id} className="skill-category">
+                    {item.category && <h3>{item.category}</h3>}
+                    <div className="skills-container">
+                      {item.items.split(',').filter((s: string) => s.trim() !== '').map((skill: string, idx: number) => (
+                        <span key={idx} className="skill-tag">{skill.trim()}</span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
       </main>
-
-      {/* PROJECT DETAILS MODAL */}
-      {selectedProject && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-6">
-          <div className="bg-[#0f172a] border border-teal-500/40 rounded-2xl max-w-2xl w-full p-8 flex flex-col gap-6 relative max-h-[90vh] overflow-y-auto shadow-2xl">
-            <button 
-              onClick={() => setSelectedProject(null)}
-              className="absolute top-6 right-6 p-2 rounded-full bg-slate-800 text-slate-400 hover:text-white transition-colors"
-            >
-              <X size={18}/>
-            </button>
-
-            <div className="flex flex-col gap-2">
-              <span className="px-3 py-1 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/30 text-xs font-bold uppercase tracking-wider w-fit">
-                {selectedProject.badge}
-              </span>
-              <h3 className="text-2xl font-bold text-white font-heading">{selectedProject.title}</h3>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Key Features & Architecture:</h4>
-              <ul className="flex flex-col gap-2 text-slate-200 text-sm leading-relaxed list-disc list-inside">
-                {selectedProject.bullets.map((bullet: string, idx: number) => (
-                  <li key={idx} className="pl-1">{bullet}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Technologies Used:</h4>
-              <div className="flex flex-wrap gap-2">
-                {selectedProject.stack.map((tech: string, i: number) => (
-                  <span key={i} className="px-3 py-1 rounded-md bg-teal-500/15 text-teal-300 border border-teal-500/30 text-xs font-semibold">
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4 pt-4 border-t border-slate-800">
-              <a 
-                href={selectedProject.link} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-bold text-xs flex items-center gap-2 hover:opacity-90 transition-opacity"
-              >
-                <Globe size={14}/> Live Demo Link
-              </a>
-              <a 
-                href={selectedProject.github} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-5 py-2.5 rounded-xl bg-slate-800 text-slate-200 font-bold text-xs flex items-center gap-2 hover:bg-slate-700 transition-colors"
-              >
-                <Code size={14}/> GitHub Repository
-              </a>
-            </div>
-          </div>
-        </div>
-      )}
-
+      
+      {/* Print-specific CSS adjustments */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @media print {
+          body, .min-h-screen { background: white !important; color: black !important; }
+          .container { padding: 0 !important; max-width: 100% !important; gap: 1rem !important; }
+          .card { border: none !important; padding: 0 !important; margin-bottom: 1.5rem !important; box-shadow: none !important; }
+          h1, h2, h3, p, div, span, li, td, th { color: black !important; text-shadow: none !important; -webkit-text-fill-color: black !important; border-color: #ddd !important; }
+          .skill-tag { border: 1px solid #ccc !important; background: #f4f4f4 !important; color: black !important; padding: 0.2rem 0.8rem !important; font-size: 0.85rem !important;}
+          .subtitle { color: #555 !important; }
+          .text-sub { color: #666 !important; }
+          h2::after { display: none !important; }
+          a { color: #0066cc !important; text-decoration: none !important; }
+          .resume-item::before { background: black !important; box-shadow: none !important; }
+          .resume-item { border-left-color: #ccc !important; }
+          .pdf-container { padding: 40px !important; }
+          
+          /* Table Print Properties */
+          table { width: 100% !important; border-collapse: collapse !important; border-color: #ccc !important; }
+          th { background: #f8f8f8 !important; border-color: #ccc !important; font-weight: bold !important;}
+          td { border-color: #ccc !important; }
+          th, td { padding: 8px !important; font-size: 0.9rem !important;}
+          tr {border-bottom: 1px solid #ccc !important;}
+        }
+      `}} />
     </div>
   );
 }
