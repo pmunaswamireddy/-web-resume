@@ -53,234 +53,145 @@ export default function ResumeBuilder() {
   
   const [basicInfo, setBasicInfo] = useState({
     name: 'Penumuru Madhu Sudhan Reddy',
-    title: 'Software Engineer | AI & Data Science (AI&DS)',
+    title: 'Software Engineer | AI & Data Science Student',
     email: 'pmrpmadhusudhanreddy@gmail.com',
-    phone: '7672082814',
+    phone: '+91 7672082814',
+    location: 'Palamaner, AP, India',
     github1: 'https://github.com/pmunaswamireddy',
-    github2: 'https://github.com/pmr1234',
+    github2: 'https://linkedin.com/in/penumuru-madhu-sudhan-reddy-942550390',
     github3: 'https://web-resume-peach-xi.vercel.app/',
     github4: 'https://frontend-nine-dusky-21.vercel.app/',
-    summary: 'Currently a 4th-year B.Tech student at MTIET with a specialized focus on Full-Stack Development, Data Engineering, and AI. Recognized for leading a team to 1st Prize at the HACKHOUSE 24-Hour Live Hackathon. Backed by 240+ hours of internship experience with industry leaders like AWS, Google, and Palo Alto Networks. Adept at engineering high-accuracy solutions and leveraging Elite+Silver NPTEL expertise to deliver scalable, data-driven applications in high-pressure professional environments.'
+    summary: 'Enthusiastic B.Tech student in Artificial Intelligence & Data Science (8.55 CGPA) and 1st Prize Winner at HACKHOUSE 24-Hour Live Hackathon. Skilled in low-latency desktop/system applications (Python, Win32 API, CustomTkinter), full-stack Web APIs (React, FastAPI, Node.js), and AI vision systems (Llama 3.2 Vision, OpenCV). Proven technical leader with 240+ hours of industry-backed cloud & data engineering training across AWS and Google programs.'
   });
 
   const [experience, setExperience] = useState([
     {
       id: 1,
-      title: 'First Prize (₹8,000) - HACKHOUSE 24-Hour Live Hackathon',
-      company: 'VAULTSPHERE AI TECHNOLOGIES PVT. LTD. & MTIET',
-      date: 'Dec 26-27, 2025',
-      description: 'Led a team to victory in a national-level hackathon. Developed a fully functional Health Management platform using React and Node.js within a strict 24-hour deadline.'
+      title: '1st Prize (Rs. 8,000) -- HACKHOUSE 24-Hour Live Hackathon',
+      company: 'Vaultsphere AI & MTIET',
+      date: 'Dec 2025',
+      description: 'Won 1st prize in a 24-hour live hackathon building scalable AI and web solutions.'
     },
     {
       id: 2,
-      title: 'AWS Gen AI & Cloud Eng. Intern (240 Hours)',
+      title: 'AWS Gen AI & Cloud Eng. (240 Hours)',
       company: 'EduSkills & APSCHE',
-      date: 'Aug - Oct 2024',
-      description: 'Intensive internship focused on AWS services, Generative AI models, and cloud architecture. Built scalable AI solutions using AWS Bedrock and Lambda.'
+      date: 'Long-Term Internship',
+      description: 'Completed 240+ hours of intensive cloud and generative AI engineering.'
     },
     {
       id: 3,
-      title: 'Data Engineering Intern (Grade: O)',
-      company: 'AWS Academy / EduSkills',
-      date: 'Oct - Dec 2025',
-      description: 'Engineered data pipelines and processed large datasets using AWS cloud infrastructure.'
+      title: 'Full Stack Web Development Intern',
+      company: 'Gen Proces',
+      date: 'July 2025 (2 Months)',
+      description: 'Built responsive web applications and full-stack API integrations.'
     },
     {
       id: 4,
-      title: 'Full Stack Web Development Intern',
-      company: 'Gen Proces',
-      date: 'July 2025',
-      description: 'Developed and maintained responsive web applications using modern JavaScript frameworks.'
-    },
-    {
-      id: 5,
-      title: 'AI-ML Virtual Intern (Grade: D)',
+      title: 'AI-ML Virtual Internship (Grade: D)',
       company: 'Google for Developers',
-      date: 'July - Sep 2024',
-      description: 'Developed predictive models using TensorFlow and Google Cloud AI. Focused on automating data preprocessing and feature engineering.'
-    },
-    {
-      id: 6,
-      title: 'Ethical Hacking Intern (Grade: P)',
-      company: 'EduSkills Academy',
-      date: 'April - June 2025',
-      description: 'Focused on penetration testing, network security, and vulnerability assessment.'
-    },
-    {
-      id: 7,
-      title: 'Cybersecurity Intern (Grade: P)',
-      company: 'Palo Alto Networks',
-      date: 'April - June 2024',
-      description: 'Configured Next-Generation Firewalls and learned cloud security practices.'
+      date: 'July -- Sep 2024',
+      description: 'Hands-on training in machine learning models and computer vision pipelines.'
     }
   ]);
-
 
   const [education, setEducation] = useState([
     {
       id: 1,
-      degree: 'B.Tech in Artificial Intelligence & Data Science',
-      school: 'MTIET / JNTUA',
-      grade: '8.55 CGPA (80.5%) | Upto 3rd-2nd Sem',
-      details: 'National Hackathon Champion; Focus on AI/ML and Full-Stack Engineering.'
+      degree: 'B.Tech -- AI & Data Science',
+      school: 'Mother Theresa Institute of Engineering and Technology',
+      grade: '8.55 CGPA (80.5%)',
+      details: 'Currently Pursuing (4th Year B.Tech) | 2023 -- 2027'
     },
     {
       id: 2,
-      degree: 'Intermediate / 12th Grade',
-      school: 'Board of Intermediate Education, AP',
+      degree: 'Intermediate -- MPC (Mathematics, Physics, Chemistry)',
+      school: 'Board of Intermediate Education, AP (Vivekananda Jr College)',
       grade: '946 / 1000 (94.6%)',
-      details: ''
+      details: 'Completed (2021 -- 2023)'
     },
     {
       id: 3,
       degree: 'SSC / 10th Grade',
-      school: 'Board of Secondary Education, AP',
+      school: 'Board of Secondary Education, AP (ZP High School, Karasanapalle)',
       grade: '573 / 600 (95.5%)',
-      details: ''
+      details: 'Completed (June 2021)'
     },
     {
       id: 4,
-      degree: 'Elite + Silver Certification in Industry 4.0 & IIoT',
-      school: 'NPTEL / IIT Kanpur',
-      grade: 'Score: 88 | Elite+Silver',
-      details: 'Ranked in the top percentage of candidates nationwide.'
+      degree: 'NPTEL Industry 4.0 & IIoT (12-Week)',
+      school: 'IIT NPTEL',
+      grade: 'Score: 88% (Elite+Silver)',
+      details: '12-Week NPTEL certification course.'
     },
     {
       id: 5,
-      degree: 'NPTEL -- Quantum Computing',
+      degree: 'NPTEL Quantum Computing (4-Week)',
       school: 'IIT NPTEL',
-      grade: 'Score: 53% | Certified',
-      details: '4-week Online Course on Quantum Computing.'
+      grade: 'Score: 53% (Certified)',
+      details: 'Certified in Quantum Computing basics.'
     },
     {
       id: 6,
       degree: 'Problem Solving & Critical Thinking',
       school: 'edX -- FullbridgeX',
       grade: 'Grade: Pass | April 2024',
-      details: 'Certified in advanced analytical methodologies and soft skills.'
+      details: 'Soft skills & critical problem solving methodology.'
     },
     {
       id: 7,
       degree: 'Upper-Intermediate English',
       school: 'edX -- UPValenciaX',
       grade: 'Grade: Pass | April 2024',
-      details: 'Upper-Intermediate English for Business and Modern Life.'
-    },
-    {
-      id: 8,
-      degree: 'Infosys Springboard -- Fault Injection',
-      school: 'Infosys',
-      grade: 'Certified | Dec 2024',
-      details: 'Training in neural network architecture and fault injection.'
-    },
-    {
-      id: 9,
-      degree: 'National Building Code',
-      school: 'CMTI',
-      grade: 'Participated | March 2024',
-      details: 'Technical training and certification by CMTI.'
+      details: 'Business English and professional communication.'
     }
   ]);
 
   const [projects, setProjects] = useState([
     {
       id: 1,
-      title: 'Scrcpy Master Control',
-      link: 'https://github.com/pmunaswamireddy/scrcpy-master-control.git',
-      bullets: [
-        'Advanced Windows GUI for low-latency mirroring and batch control of multiple Android devices using ADB.',
-        'Features built-in wireless pairing (QR Code/mDNS), internet tunneling (Tailscale), and Broadcast Mode.',
-        'Engineered with Python (CustomTkinter) and a background-buffered UI queue for zero-lag performance.'
-      ]
-    },
-    {
-      id: 2,
-      title: 'JNTUA Calculator App',
-      link: 'https://github.com/pmunaswamireddy/-jntua-calculator.git',
-      bullets: [
-        'Android APK for automatic SGPA/CGPA calculation with AI-based OCR extraction from PDF mark sheets.',
-        'Built using Java/Kotlin with integrated ML Kit for text recognition from images.',
-        'Reduces manual GPA calculation effort to zero for JNTUA students.'
-      ]
-    },
-    {
-      id: 3,
       title: 'Elderly Guardian AI',
       link: 'https://frontend-nine-dusky-21.vercel.app/',
       bullets: [
         'ML-powered web platform for remote elderly health monitoring and emergency alert system.',
-        'Built with React frontend and FastAPI backend; deployed live on Vercel.',
-        'Features real-time health data tracking, AI anomaly detection, and caregiver notifications.'
+        'Built with React frontend and FastAPI backend; deployed live on Vercel with real-time AI anomaly detection.'
+      ]
+    },
+    {
+      id: 2,
+      title: 'Invisible AI Overlay',
+      link: 'https://github.com/pmunaswamireddy/Invisible-ai',
+      bullets: [
+        'Engineered a stealth floating AI desktop assistant using native Win32 APIs for anti-screen capture rendering.',
+        'Integrated vision-based question detection via Groq/NVIDIA Llama 3.2 Vision and hardware typing simulation via SendInput.'
+      ]
+    },
+    {
+      id: 3,
+      title: 'Scrcpy Master Control',
+      link: 'https://github.com/pmunaswamireddy/scrcpy-master-control.git',
+      bullets: [
+        'Built an advanced Windows GUI for low-latency mirroring and batch wireless pairing/control of multiple Android devices.',
+        'Designed a background-buffered UI queue ensuring zero lag and integrated Tailscale for remote wireless management.'
       ]
     },
     {
       id: 4,
-      title: 'Hetro Shopping App',
-      link: '',
+      title: 'JNTUA Calculator & OCR App',
+      link: 'https://github.com/pmunaswamireddy/-jntua-calculator.git',
       bullets: [
-        'Full-stack e-commerce platform with secure authentication, cart management, and product listing.',
-        'Developed using React.js, Node.js, Express.js, and MongoDB with JWT-based auth.',
-        'Includes admin panel for product and order management with responsive UI design.'
-      ]
-    },
-    {
-      id: 5,
-      title: 'Invisible AI Overlay',
-      link: 'https://github.com/pmunaswamireddy/Invisible-ai',
-      bullets: [
-        'Stealth floating AI assistant for Windows 10/11 using native Win32 APIs for anti-screen capture rendering (OBS/Discord invisible) and bypassed focus click routing.',
-        'Features voice dictation threads, vision-based question detection (Llama 3.2 Vision via Groq/NVIDIA), and hardware typing character simulation.',
-        'Includes integrated incognito mini browser, daily quota trackers, and Authenticode self-signing bypasses.'
-      ]
-    },
-    {
-      id: 6,
-      title: 'Handwriting Keyboard',
-      link: 'https://github.com/pmunaswamireddy/HandWriting-keyboard',
-      bullets: [
-        'Cross-platform Handwriting IME keyboard app compiling drawn canvas characters into TrueType Font (.ttf) files.',
-        'Integrates Gemini-powered OCR processing, contour segmentation, and greedy bipartite reading-order matching for auto-extracting handwritten pages.',
-        'Supports dynamic next-word typing suggestions, swipe typing, voice input, and customizable themes.'
-      ]
-    },
-    {
-      id: 7,
-      title: 'Hand Gesture Control System',
-      link: 'https://github.com/pmunaswamireddy/Hand-Gesture-Control',
-      bullets: [
-        'Real-time computer vision system using OpenCV, MediaPipe Hands, and PyAutoGUI to control desktop cursor, clicks, and scrolls via hand gestures.',
-        'Features interactive Tkinter configuration GUI, calibration mode for high precision, and visual training simulations.',
-        'Bundled as a single-file executable using PyInstaller with customized version metadata.'
-      ]
-    },
-    {
-      id: 8,
-      title: 'Student Result Prediction System',
-      link: '',
-      bullets: [
-        'Machine Learning web application built using Streamlit, scikit-learn, Pandas, and NumPy to predict PASS/FAIL outcomes.',
-        'Trained a Logistic Regression binary classifier on a synthetic dataset of 500 records, achieving 98.00% accuracy and 100.00% recall.',
-        'Includes interactive dashboards for Seaborn feature importance heatmaps, Matplotlib data plots, and performance metrics.'
-      ]
-    },
-    {
-      id: 9,
-      title: 'Book Library API',
-      link: 'https://github.com/pmunaswamireddy/book-library-api',
-      bullets: [
-        'Full-stack Book Management System using FastAPI, SQLAlchemy (SQLite), and a modern glassmorphic web dashboard.',
-        'Supports custom book covers, genre tagging, dynamic stats tracking, advanced filtering, and full CRUD endpoints.',
-        'Features built-in CORS security policies, input validation, and absolute file path configurations.'
+        'Developed an Android app calculating SGPA, CGPA, and percentage tailored to JNTUA R23 regulations.',
+        'Implemented Google ML Kit OCR to automatically extract grades from mark sheet images/PDFs with high accuracy.'
       ]
     }
   ]);
 
   const [skills, setSkills] = useState([
-    { id: 1, category: 'Languages', items: 'C, Python, Java, JavaScript, HTML/CSS, SQL' },
-    { id: 2, category: 'Frameworks & Tech', items: 'React.js, Next.js, Node.js, Golang, Docker, Kubernetes, CI/CD' },
-    { id: 3, category: 'Soft Skills', items: 'Leadership, Effective Communication, High Accuracy, Confident' },
-    { id: 4, category: 'Spoken Languages', items: 'Telugu, Hindi, English, Sanskrit' },
-    { id: 5, category: 'Hobbies', items: 'Gaming, Photography, Traveling, Exploring New Tech' }
+    { id: 1, category: 'Programming Languages', items: 'Python, Java, C, JavaScript, SQL, Prompt Engineering' },
+    { id: 2, category: 'Web & Frameworks', items: 'React.js, Node.js, HTML5/CSS3' },
+    { id: 3, category: 'AI, ML & Data Science', items: 'Scikit-learn, PyTorch, OpenCV, MediaPipe, MongoDB, LangChain' },
+    { id: 4, category: 'Tools & Platforms', items: 'Git, GitHub, VS Code, Antigravity IDE' },
+    { id: 5, category: 'Core Competencies', items: 'Problem Solving, Leadership Skills, Technical Communication, Adaptability' }
   ]);
 
 
