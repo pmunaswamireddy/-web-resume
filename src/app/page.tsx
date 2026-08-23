@@ -1,9 +1,8 @@
-"use client"; // Force Update: 2026-03-09
+"use client";
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useReactToPrint } from 'react-to-print';
-import Image from 'next/image';
-import { Camera, Upload, Plus, Trash2, Printer, Edit2, Check } from 'lucide-react';
+import { Plus, Trash2, Edit2, Printer, Check } from 'lucide-react';
 
 export default function ResumeBuilder() {
   const [isEditing, setIsEditing] = useState(false);
@@ -21,36 +20,6 @@ export default function ResumeBuilder() {
   interface Skill { id: number; category: string; items: string; }
 
   // Default Data State
-  const [profileImg, setProfileImg] = useState<string | null>(() => {
-    if (typeof window !== 'undefined') return localStorage.getItem('resume_profileImg');
-    return null;
-  });
-  const [photoOffsetY, setPhotoOffsetY] = useState(() => {
-    if (typeof window !== 'undefined') return Number(localStorage.getItem('resume_photoOffsetY')) || 25;
-    return 25;
-  });
-
-  // Keep localStorage in sync when state changes
-  useEffect(() => {
-    if (profileImg) localStorage.setItem('resume_profileImg', profileImg);
-    else localStorage.removeItem('resume_profileImg');
-  }, [profileImg]);
-
-  useEffect(() => {
-    localStorage.setItem('resume_photoOffsetY', String(photoOffsetY));
-  }, [photoOffsetY]);
-
-  const saveProfileImg = (img: string | null) => {
-    setProfileImg(img);
-    if (img) localStorage.setItem('resume_profileImg', img);
-    else localStorage.removeItem('resume_profileImg');
-  };
-
-  const saveOffsetY = (val: number) => {
-    setPhotoOffsetY(val);
-    localStorage.setItem('resume_photoOffsetY', String(val));
-  };
-  
   const [basicInfo, setBasicInfo] = useState({
     name: 'Penumuru Madhu Sudhan Reddy',
     title: 'Software Engineer | AI & Data Science Student',
@@ -194,38 +163,6 @@ export default function ResumeBuilder() {
     { id: 5, category: 'Core Competencies', items: 'Problem Solving, Leadership Skills, Technical Communication, Adaptability' }
   ]);
 
-
-  // Handlers for Images
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        saveProfileImg(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const captureCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      const video = document.createElement('video');
-      video.srcObject = stream;
-      video.play();
-      setTimeout(() => {
-        const canvas = document.createElement('canvas');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        canvas.getContext('2d')?.drawImage(video, 0, 0);
-        saveProfileImg(canvas.toDataURL('image/jpeg'));
-        stream.getTracks().forEach(track => track.stop());
-      }, 1500);
-    } catch {
-      alert("Could not access camera. Please check permissions.");
-    }
-  };
-
   // Handlers for Add/Remove
   const addExperience = () => setExperience([...experience, { id: Date.now(), title: '', company: '', date: '', description: '' }]);
   const removeExperience = (id: number) => setExperience(experience.filter(e => e.id !== id));
@@ -253,8 +190,24 @@ export default function ResumeBuilder() {
   const removeSkill = (id: number) => setSkills(skills.filter((s: Skill) => s.id !== id));
 
   return (
-    <div className="min-h-screen bg-[#0b0c10] text-[#c5c6c7]">
-      {/* Floating Action Controls Removed */}
+    <div className="min-h-screen bg-[#0b0c10] text-[#c5c6c7] relative">
+      {/* Top Action Bar */}
+      <div className="fixed top-6 right-6 flex gap-3 z-50 print:hidden">
+        <button
+          onClick={() => setIsEditing(!isEditing)}
+          className="flex items-center gap-2 px-4 py-2 bg-[#1f2833] text-[#66fcf1] border border-[#45a29e] rounded-lg hover:bg-[#45a29e] hover:text-black transition-all shadow-lg text-sm font-medium"
+        >
+          {isEditing ? <Check size={18}/> : <Edit2 size={18}/>}
+          {isEditing ? 'Done Editing' : 'Edit Mode'}
+        </button>
+        <button
+          onClick={() => handlePrint()}
+          className="flex items-center gap-2 px-4 py-2 bg-[#66fcf1] text-black rounded-lg hover:bg-[#45a29e] transition-all shadow-lg text-sm font-bold"
+        >
+          <Printer size={18}/>
+          Print PDF
+        </button>
+      </div>
 
       <main ref={printRef} className="container mx-auto max-w-[1000px] px-6 py-12 flex flex-col gap-12 pdf-container">
         
