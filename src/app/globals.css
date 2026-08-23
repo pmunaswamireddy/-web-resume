@@ -87,6 +87,7 @@ h1, h2, h3, .font-heading {
 .gradient-text-teal {
   background: linear-gradient(135deg, #ffffff 10%, #5eead4 50%, #00f5d4 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
