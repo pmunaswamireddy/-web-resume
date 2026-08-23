@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { Plus, Trash2, Edit2, Printer, Check } from 'lucide-react';
 
