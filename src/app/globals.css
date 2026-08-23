@@ -1,15 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg-main: #0b0f19;
-  --bg-card: #131c2e;
-  --bg-card-hover: #1a263d;
-  --border-card: #23334d;
-  --border-card-hover: #00f5d4;
+  --bg-main: #060a12;
+  --bg-card: rgba(15, 23, 42, 0.85);
+  --bg-card-hover: rgba(30, 41, 59, 0.95);
+  --border-card: rgba(0, 245, 212, 0.25);
+  --border-card-hover: rgba(0, 245, 212, 0.6);
   --accent-teal: #00f5d4;
   --accent-cyan: #06b6d4;
   --accent-amber: #fbbf24;
@@ -31,68 +31,99 @@ html {
 body {
   background-color: var(--bg-main);
   color: var(--text-main);
-  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   overflow-x: hidden;
   min-height: 100vh;
-  line-height: 1.6;
 }
 
-/* Background Subtle Gradient Glow */
-.bg-ambient {
+h1, h2, h3, .font-heading {
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Synced Navy & Teal Ambient Background */
+.bg-ambient-teal {
   background: 
-    radial-gradient(circle at 20% 15%, rgba(0, 245, 212, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 80% 85%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
-    #0b0f19;
+    radial-gradient(circle at 15% 15%, rgba(0, 245, 212, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(251, 191, 36, 0.06) 0%, transparent 50%),
+    #060a12;
 }
 
-/* Modern Clean Card */
-.card-clean {
-  background-color: var(--bg-card);
+/* Glowing Pulsing Spheres */
+.glow-orb-teal {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orb-float 10s ease-in-out infinite alternate;
+}
+
+@keyframes orb-float {
+  0% { transform: scale(1) translate(0, 0); opacity: 0.4; }
+  50% { transform: scale(1.2) translate(30px, -30px); opacity: 0.6; }
+  100% { transform: scale(1) translate(-30px, 30px); opacity: 0.4; }
+}
+
+/* High-End Synced Glass Card */
+.card-teal {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(13, 148, 136, 0.2) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-card);
   border-radius: 1.25rem;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 245, 212, 0.05);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.card-clean:hover {
-  background-color: var(--bg-card-hover);
-  border-color: rgba(0, 245, 212, 0.4);
-  transform: translateY(-3px);
-  box-shadow: 0 20px 40px -15px rgba(0, 245, 212, 0.15);
+.card-teal:hover {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 118, 110, 0.4) 100%);
+  border-color: var(--border-card-hover);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px -15px rgba(0, 245, 212, 0.25), 0 0 30px rgba(6, 182, 212, 0.2);
 }
 
-/* Button & Pill */
-.btn-primary {
+/* Animated Gradient Header Text */
+.gradient-text-teal {
+  background: linear-gradient(135deg, #ffffff 10%, #5eead4 50%, #00f5d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Primary Button */
+.btn-teal {
   background: linear-gradient(135deg, #00f5d4 0%, #06b6d4 100%);
-  color: #000000;
-  font-weight: 700;
+  color: #030712;
+  font-weight: 800;
   border-radius: 0.875rem;
   padding: 0.75rem 1.5rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(0, 245, 212, 0.3);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 245, 212, 0.35);
 }
 
-.btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(0, 245, 212, 0.4);
+.btn-teal:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 245, 212, 0.5);
   filter: brightness(1.1);
 }
 
-.chip-tag {
-  background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+/* Interactive Pill Tags */
+.pill-teal {
+  background: rgba(0, 245, 212, 0.08);
+  border: 1px solid rgba(0, 245, 212, 0.2);
   color: #cbd5e1;
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 600;
   padding: 0.5rem 1rem;
   border-radius: 0.75rem;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
-.chip-tag:hover {
-  background-color: rgba(0, 245, 212, 0.1);
-  border-color: rgba(0, 245, 212, 0.4);
+.pill-teal:hover {
+  background: rgba(0, 245, 212, 0.18);
+  border-color: rgba(0, 245, 212, 0.5);
   color: #00f5d4;
+  transform: translateY(-1px);
 }
 
 /* Custom Scrollbar */
@@ -100,10 +131,10 @@ body {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0b0f19;
+  background: #060a12;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #111827;
   border-radius: 5px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -119,7 +150,7 @@ body {
   .print\:hidden {
     display: none !important;
   }
-  .card-clean {
+  .card-teal {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;

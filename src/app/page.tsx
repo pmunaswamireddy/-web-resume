@@ -5,7 +5,7 @@ import { useReactToPrint } from 'react-to-print';
 import { 
   Code, Mail, Phone, MapPin, Globe, Briefcase, GraduationCap, 
   ExternalLink, Sparkles, Copy, Check, Cpu, Terminal, 
-  Download, ArrowUpRight, ShieldCheck, Trophy, X, Laptop, Edit2
+  Download, ArrowUpRight, ShieldCheck, Trophy, X, Laptop, Edit2, Star
 } from 'lucide-react';
 
 interface ProjectItem {
@@ -52,13 +52,13 @@ export default function MadhuPortfolio() {
   });
 
   const metrics = [
-    { label: 'Hackathon Champion', value: '1st Prize (₹8,000)', sub: 'HACKHOUSE 24-Hour Live Hackathon', icon: Trophy, color: 'text-amber-400' },
-    { label: 'B.Tech CGPA', value: '8.55', sub: '80.5% | Top Academic Record', icon: GraduationCap, color: 'text-teal-400' },
-    { label: 'NPTEL Elite+Silver', value: '88%', sub: 'Industry 4.0 & IIoT | IIT NPTEL', icon: ShieldCheck, color: 'text-sky-400' },
-    { label: 'Cloud Training', value: '240+ Hours', sub: 'AWS Cloud & Gen AI Internship', icon: Briefcase, color: 'text-indigo-400' }
+    { label: 'Hackathon Champion', value: '1st Prize (₹8,000)', sub: 'HACKHOUSE 24-Hour Live Hackathon', icon: Trophy, color: 'text-amber-400', bg: 'bg-amber-500/10 border-amber-500/30' },
+    { label: 'B.Tech CGPA', value: '8.55', sub: '80.5% | Top Academic Record', icon: GraduationCap, color: 'text-teal-400', bg: 'bg-teal-500/10 border-teal-500/30' },
+    { label: 'NPTEL Elite+Silver', value: '88%', sub: 'Industry 4.0 & IIoT | IIT NPTEL', icon: ShieldCheck, color: 'text-cyan-400', bg: 'bg-cyan-500/10 border-cyan-500/30' },
+    { label: 'Cloud Training', value: '240+ Hours', sub: 'AWS Cloud & Gen AI Internship', icon: Briefcase, color: 'text-indigo-400', bg: 'bg-indigo-500/10 border-indigo-500/30' }
   ];
 
-  const projects = [
+  const projects: ProjectItem[] = [
     {
       id: 1,
       title: 'Elderly Guardian AI Platform',
@@ -217,24 +217,28 @@ export default function MadhuPortfolio() {
     : projects.filter(p => p.category.includes(activeCategory));
 
   return (
-    <div className="min-h-screen bg-ambient text-slate-100 selection:bg-teal-400 selection:text-black">
+    <div className="min-h-screen bg-ambient-teal text-slate-100 selection:bg-teal-400 selection:text-black relative">
       
       {/* Toast Notification */}
       {copiedText && (
-        <div className="fixed bottom-6 right-6 z-50 bg-teal-400 text-slate-950 px-5 py-3 rounded-xl font-bold shadow-2xl flex items-center gap-2 animate-bounce">
+        <div className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 px-5 py-3 rounded-xl font-bold shadow-2xl flex items-center gap-2 animate-bounce">
           <Check size={18}/> Copied {copiedText} to clipboard!
         </div>
       )}
 
+      {/* Glowing Ambient Spheres */}
+      <div className="glow-orb-teal w-[600px] h-[600px] bg-teal-500/20 top-[-100px] left-[-100px]" />
+      <div className="glow-orb-teal w-[650px] h-[650px] bg-cyan-500/15 bottom-[5%] right-[-100px]" />
+
       {/* Sticky Navbar */}
-      <nav className="sticky top-0 z-40 bg-[#0b0f19]/90 backdrop-blur-md border-b border-slate-800 px-6 py-4 print:hidden">
+      <nav className="sticky top-0 z-40 bg-[#060a12]/85 backdrop-blur-xl border-b border-teal-500/20 px-6 py-4 print:hidden">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-teal-400 text-slate-950 font-black text-lg flex items-center justify-center shadow-lg shadow-teal-400/20">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-400 to-cyan-500 text-slate-950 font-black text-lg flex items-center justify-center shadow-lg shadow-teal-500/25">
               MR
             </div>
             <div>
-              <div className="font-bold text-white leading-tight text-base">Penumuru Madhu Sudhan Reddy</div>
+              <div className="font-bold text-white leading-tight text-base font-heading">Penumuru Madhu Sudhan Reddy</div>
               <div className="text-xs text-amber-400 flex items-center gap-1.5 font-medium">
                 <Trophy size={12}/> HACKHOUSE 1st Prize Winner
               </div>
@@ -252,14 +256,14 @@ export default function MadhuPortfolio() {
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setIsEditing(!isEditing)}
-              className="px-3.5 py-2 rounded-xl bg-slate-800 text-teal-400 border border-slate-700 text-xs font-semibold hover:bg-slate-700 transition-all flex items-center gap-1.5"
+              className="px-3.5 py-2 rounded-xl bg-slate-900 text-teal-400 border border-teal-500/30 text-xs font-semibold hover:bg-slate-800 transition-all flex items-center gap-1.5"
             >
               {isEditing ? <Check size={14}/> : <Edit2 size={14}/>}
               {isEditing ? 'Done' : 'Edit'}
             </button>
             <button 
               onClick={() => handlePrint()}
-              className="btn-primary text-xs flex items-center gap-2 uppercase tracking-wider"
+              className="btn-teal text-xs flex items-center gap-2 uppercase tracking-wider"
             >
               <Download size={14}/> Download PDF
             </button>
@@ -268,17 +272,17 @@ export default function MadhuPortfolio() {
       </nav>
 
       {/* Main Content Container */}
-      <main ref={printRef} className="max-w-6xl mx-auto px-6 py-12 flex flex-col gap-20">
+      <main ref={printRef} className="max-w-6xl mx-auto px-6 py-12 flex flex-col gap-24 relative z-10">
         
         {/* HERO SECTION */}
         <section id="about" className="flex flex-col gap-8 pt-4">
-          <div className="flex flex-col gap-4 max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-400 text-xs font-semibold uppercase tracking-wider w-fit">
-              <Trophy size={14} className="text-amber-400"/> Hackathon Winner • AI & Full-Stack Engineer
+          <div className="flex flex-col gap-5 max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-300 text-xs font-semibold uppercase tracking-wider w-fit shadow-inner">
+              <Trophy size={14} className="text-amber-400"/> Hackathon Winner • Navy & Teal Theme
             </div>
 
             {isEditing ? (
-              <div className="flex flex-col gap-3 card-clean p-6 border-dashed border-teal-400">
+              <div className="flex flex-col gap-3 card-teal p-6 border-dashed border-teal-400">
                 <input 
                   value={basicInfo.name} 
                   onChange={e => setBasicInfo({...basicInfo, name: e.target.value})} 
@@ -297,12 +301,12 @@ export default function MadhuPortfolio() {
               </div>
             ) : (
               <>
-                <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight">
-                  Penumuru Madhu <span className="text-teal-400">Sudhan Reddy</span>
+                <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight gradient-text-teal font-heading">
+                  Penumuru Madhu Sudhan Reddy
                 </h1>
 
-                <div className="text-slate-400 text-lg font-medium">
-                  {basicInfo.role}
+                <div className="text-teal-400 text-xl font-semibold flex items-center gap-2">
+                  <Star size={18} className="text-cyan-400"/> {basicInfo.role}
                 </div>
 
                 <p className="text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
@@ -315,14 +319,14 @@ export default function MadhuPortfolio() {
             <div className="flex flex-wrap items-center gap-3 pt-3 print:hidden">
               <button 
                 onClick={() => copyToClipboard(basicInfo.email, 'Email')}
-                className="chip-tag flex items-center gap-2 cursor-pointer"
+                className="pill-teal flex items-center gap-2 cursor-pointer"
               >
                 <Mail size={14} className="text-teal-400"/> {basicInfo.email} <Copy size={12}/>
               </button>
 
               <button 
                 onClick={() => copyToClipboard(basicInfo.phone, 'Phone')}
-                className="chip-tag flex items-center gap-2 cursor-pointer"
+                className="pill-teal flex items-center gap-2 cursor-pointer"
               >
                 <Phone size={14} className="text-teal-400"/> {basicInfo.phone} <Copy size={12}/>
               </button>
@@ -331,7 +335,7 @@ export default function MadhuPortfolio() {
                 href={basicInfo.github} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="chip-tag flex items-center gap-2 cursor-pointer"
+                className="pill-teal flex items-center gap-2 cursor-pointer"
               >
                 <Code size={14} className="text-teal-400"/> GitHub <ExternalLink size={12}/>
               </a>
@@ -340,7 +344,7 @@ export default function MadhuPortfolio() {
                 href={basicInfo.linkedin} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="chip-tag flex items-center gap-2 cursor-pointer"
+                className="pill-teal flex items-center gap-2 cursor-pointer"
               >
                 <Globe size={14} className="text-teal-400"/> LinkedIn <ExternalLink size={12}/>
               </a>
@@ -349,12 +353,12 @@ export default function MadhuPortfolio() {
                 href={basicInfo.livedemo} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="chip-tag flex items-center gap-2 cursor-pointer"
+                className="pill-teal flex items-center gap-2 cursor-pointer"
               >
                 <Laptop size={14} className="text-teal-400"/> Live App <ExternalLink size={12}/>
               </a>
 
-              <div className="chip-tag flex items-center gap-2 cursor-default">
+              <div className="pill-teal flex items-center gap-2 cursor-default">
                 <MapPin size={14} className="text-teal-400"/> {basicInfo.location}
               </div>
             </div>
@@ -363,13 +367,15 @@ export default function MadhuPortfolio() {
           {/* 4 METRICS CARDS */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
             {metrics.map((m, idx) => (
-              <div key={idx} className="card-clean p-6 flex flex-col justify-between gap-4">
+              <div key={idx} className="card-teal p-6 flex flex-col justify-between gap-4">
                 <div className="flex justify-between items-center">
                   <span className="text-slate-400 text-xs font-semibold uppercase tracking-wider">{m.label}</span>
-                  <m.icon size={20} className={m.color}/>
+                  <div className={`p-2 rounded-lg ${m.bg}`}>
+                    <m.icon size={18} className={m.color}/>
+                  </div>
                 </div>
                 <div>
-                  <div className={`text-2xl sm:text-3xl font-extrabold tracking-tight ${m.color}`}>{m.value}</div>
+                  <div className={`text-2xl sm:text-3xl font-extrabold tracking-tight font-heading ${m.color}`}>{m.value}</div>
                   <div className="text-slate-400 text-xs mt-1 font-medium">{m.sub}</div>
                 </div>
               </div>
@@ -378,14 +384,14 @@ export default function MadhuPortfolio() {
         </section>
 
         {/* HACKHOUSE WINNER BANNER */}
-        <section className="card-clean p-8 border-l-4 border-l-amber-400 bg-slate-900/90 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <section className="card-teal p-8 border-l-4 border-l-amber-400 bg-gradient-to-r from-amber-500/10 via-slate-900/90 to-teal-500/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
-            <div className="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center justify-center shrink-0">
               <Trophy size={30}/>
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-amber-400 text-xs font-extrabold uppercase tracking-wider">National Hackathon Champion</span>
-              <h3 className="text-2xl font-bold text-white">1st Prize Winner (₹8,000 Cash Award)</h3>
+              <h3 className="text-2xl font-bold text-white font-heading">1st Prize Winner (₹8,000 Cash Award)</h3>
               <p className="text-slate-300 text-sm leading-relaxed max-w-xl">
                 Led a team to victory at the HACKHOUSE 24-Hour Live Hackathon organized by Vaultsphere AI & MTIET, engineering a fully functional web & AI platform in 24 hours.
               </p>
@@ -398,21 +404,21 @@ export default function MadhuPortfolio() {
 
         {/* FEATURED PROJECTS */}
         <section id="projects" className="flex flex-col gap-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-slate-800 pb-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-teal-500/20 pb-4">
             <div>
               <span className="text-teal-400 text-xs font-bold uppercase tracking-wider">Portfolio Showcase</span>
-              <h2 className="text-3xl font-bold text-white mt-1">Featured Projects</h2>
+              <h2 className="text-3xl font-bold text-white mt-1 font-heading">Featured Projects</h2>
             </div>
 
             {/* Filter Tabs */}
-            <div className="flex items-center gap-2 bg-slate-900 p-1.5 rounded-xl border border-slate-800">
+            <div className="flex items-center gap-2 bg-slate-900/80 p-1.5 rounded-xl border border-teal-500/20">
               {['All', 'AI & Vision', 'Desktop Systems', 'Web'].map(cat => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
                   className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
                     activeCategory === cat 
-                      ? 'bg-teal-400 text-slate-950 shadow' 
+                      ? 'bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 shadow-md' 
                       : 'text-slate-400 hover:text-white'
                   }`}
                 >
@@ -426,17 +432,17 @@ export default function MadhuPortfolio() {
             {filteredProjects.map(project => (
               <div 
                 key={project.id} 
-                className="card-clean p-6 flex flex-col justify-between gap-6 group"
+                className="card-teal p-6 flex flex-col justify-between gap-6 group"
               >
                 <div className="flex flex-col gap-4">
                   <div className="flex justify-between items-center">
-                    <span className="px-3 py-1 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20 text-xs font-bold">
+                    <span className="px-3 py-1 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/30 text-xs font-bold">
                       {project.badge}
                     </span>
                     <ArrowUpRight size={18} className="text-slate-500 group-hover:text-teal-400 transition-colors"/>
                   </div>
 
-                  <h3 className="text-xl font-bold text-white group-hover:text-teal-300 transition-colors">
+                  <h3 className="text-xl font-bold text-white group-hover:text-teal-300 transition-colors font-heading">
                     {project.title}
                   </h3>
 
@@ -445,10 +451,10 @@ export default function MadhuPortfolio() {
                   </p>
                 </div>
 
-                <div className="flex flex-col gap-4 pt-4 border-t border-slate-800">
+                <div className="flex flex-col gap-4 pt-4 border-t border-teal-500/15">
                   <div className="flex flex-wrap gap-1.5">
                     {project.stack.map((tech, i) => (
-                      <span key={i} className="px-2.5 py-1 rounded-md bg-slate-900 text-slate-300 text-xs font-medium border border-slate-800">
+                      <span key={i} className="px-2.5 py-1 rounded-md bg-slate-950/80 text-slate-300 text-xs font-medium border border-teal-500/20">
                         {tech}
                       </span>
                     ))}
@@ -459,7 +465,7 @@ export default function MadhuPortfolio() {
                       href={project.link} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="flex-1 py-2 rounded-lg bg-teal-400 text-slate-950 text-xs font-bold text-center hover:bg-teal-300 transition-colors"
+                      className="flex-1 py-2 rounded-lg bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 text-xs font-bold text-center hover:opacity-90 transition-opacity"
                     >
                       Live Demo / Link
                     </a>
@@ -473,7 +479,7 @@ export default function MadhuPortfolio() {
                     </a>
                     <button 
                       onClick={() => setSelectedProject(project)}
-                      className="px-3 py-2 rounded-lg bg-slate-800 text-teal-400 text-xs font-bold hover:bg-slate-700 transition-colors"
+                      className="px-3 py-2 rounded-lg bg-teal-500/10 text-teal-400 border border-teal-500/20 text-xs font-bold hover:bg-teal-500/20 transition-colors"
                       title="View Details"
                     >
                       Details
@@ -487,26 +493,26 @@ export default function MadhuPortfolio() {
 
         {/* SKILLS MATRIX */}
         <section id="skills" className="flex flex-col gap-6">
-          <div className="border-b border-slate-800 pb-4">
+          <div className="border-b border-teal-500/20 pb-4">
             <span className="text-teal-400 text-xs font-bold uppercase tracking-wider">Technical Toolkit</span>
-            <h2 className="text-3xl font-bold text-white mt-1">Skills & Competencies</h2>
+            <h2 className="text-3xl font-bold text-white mt-1 font-heading">Skills & Competencies</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {skillCategories.map((cat, idx) => (
-              <div key={idx} className="card-clean p-6 flex flex-col gap-5">
+              <div key={idx} className="card-teal p-6 flex flex-col gap-5">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20">
+                  <div className="p-2.5 rounded-xl bg-teal-500/15 text-teal-400 border border-teal-500/30">
                     <cat.icon size={20}/>
                   </div>
-                  <h3 className="text-base font-bold text-white">{cat.title}</h3>
+                  <h3 className="text-base font-bold text-white font-heading">{cat.title}</h3>
                 </div>
 
                 <div className="flex flex-wrap gap-2">
                   {cat.skills.map((skill, i) => (
                     <span 
                       key={i} 
-                      className="px-3 py-1.5 rounded-xl bg-slate-900 text-slate-200 border border-slate-800 text-xs font-semibold hover:border-teal-400 hover:text-teal-300 transition-colors cursor-default"
+                      className="px-3 py-1.5 rounded-xl bg-slate-950/80 text-slate-200 border border-teal-500/20 text-xs font-semibold hover:border-teal-400 hover:text-teal-300 transition-colors cursor-default"
                     >
                       {skill}
                     </span>
@@ -519,20 +525,20 @@ export default function MadhuPortfolio() {
 
         {/* INTERNSHIPS TIMELINE */}
         <section id="experience" className="flex flex-col gap-6">
-          <div className="border-b border-slate-800 pb-4">
+          <div className="border-b border-teal-500/20 pb-4">
             <span className="text-teal-400 text-xs font-bold uppercase tracking-wider">Industry Experience</span>
-            <h2 className="text-3xl font-bold text-white mt-1">Internships & Achievements</h2>
+            <h2 className="text-3xl font-bold text-white mt-1 font-heading">Internships & Achievements</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {experience.map(exp => (
-              <div key={exp.id} className="card-clean p-6 flex flex-col gap-4 border-l-4 border-l-teal-400">
+              <div key={exp.id} className="card-teal p-6 flex flex-col gap-4 border-l-4 border-l-teal-400">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-lg font-bold text-white">{exp.role}</h3>
+                    <h3 className="text-lg font-bold text-white font-heading">{exp.role}</h3>
                     <div className="text-teal-400 text-xs font-semibold mt-0.5">{exp.company}</div>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-extrabold">
+                  <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-xs font-extrabold">
                     {exp.grade}
                   </span>
                 </div>
@@ -541,7 +547,7 @@ export default function MadhuPortfolio() {
                   {exp.description}
                 </p>
 
-                <div className="text-slate-400 text-xs font-medium pt-3 border-t border-slate-800 flex items-center justify-between">
+                <div className="text-slate-400 text-xs font-medium pt-3 border-t border-teal-500/15 flex items-center justify-between">
                   <span>Period: {exp.period}</span>
                   <span className="text-slate-400">Verified Program</span>
                 </div>
@@ -552,22 +558,22 @@ export default function MadhuPortfolio() {
 
         {/* ACADEMIC HISTORY */}
         <section id="education" className="flex flex-col gap-6">
-          <div className="border-b border-slate-800 pb-4">
+          <div className="border-b border-teal-500/20 pb-4">
             <span className="text-teal-400 text-xs font-bold uppercase tracking-wider">Academic Background</span>
-            <h2 className="text-3xl font-bold text-white mt-1">Education</h2>
+            <h2 className="text-3xl font-bold text-white mt-1 font-heading">Education</h2>
           </div>
 
           <div className="flex flex-col gap-4">
             {education.map((edu, idx) => (
-              <div key={idx} className="card-clean p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div key={idx} className="card-teal p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div className="flex flex-col gap-1 max-w-2xl">
-                  <h3 className="text-lg font-bold text-white">{edu.degree}</h3>
+                  <h3 className="text-lg font-bold text-white font-heading">{edu.degree}</h3>
                   <div className="text-teal-400 text-xs font-semibold">{edu.institution}</div>
                   <p className="text-slate-300 text-sm mt-1">{edu.details}</p>
                 </div>
 
                 <div className="flex flex-col items-start md:items-end gap-1">
-                  <span className="text-2xl font-extrabold text-teal-400 tracking-tight">{edu.score}</span>
+                  <span className="text-2xl font-extrabold text-teal-400 tracking-tight font-heading">{edu.score}</span>
                   <span className="text-slate-400 text-xs font-medium">{edu.period}</span>
                 </div>
               </div>
@@ -577,20 +583,20 @@ export default function MadhuPortfolio() {
 
         {/* CERTIFICATIONS GRID */}
         <section id="certifications" className="flex flex-col gap-6">
-          <div className="border-b border-slate-800 pb-4">
+          <div className="border-b border-teal-500/20 pb-4">
             <span className="text-teal-400 text-xs font-bold uppercase tracking-wider">Credentials & Courses</span>
-            <h2 className="text-3xl font-bold text-white mt-1">Certifications</h2>
+            <h2 className="text-3xl font-bold text-white mt-1 font-heading">Certifications</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
             {certifications.map((cert, idx) => (
-              <div key={idx} className="card-clean p-5 flex flex-col justify-between gap-4 border-l-4 border-l-teal-400">
+              <div key={idx} className="card-teal p-5 flex flex-col justify-between gap-4 border-l-4 border-l-teal-400">
                 <div className="flex flex-col gap-1">
-                  <h3 className="text-base font-bold text-white">{cert.title}</h3>
+                  <h3 className="text-base font-bold text-white font-heading">{cert.title}</h3>
                   <span className="text-slate-400 text-xs">{cert.issuer}</span>
                 </div>
 
-                <span className="px-3 py-1 rounded-md bg-teal-500/10 text-teal-400 border border-teal-500/20 text-xs font-bold w-fit">
+                <span className="px-3 py-1 rounded-md bg-teal-500/15 text-teal-300 border border-teal-500/30 text-xs font-bold w-fit">
                   {cert.badge}
                 </span>
               </div>
@@ -599,7 +605,7 @@ export default function MadhuPortfolio() {
         </section>
 
         {/* FOOTER */}
-        <footer className="pt-10 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400">
+        <footer className="pt-10 border-t border-teal-500/20 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400">
           <div>
             © 2026 Penumuru Madhu Sudhan Reddy. Built with React 19, Next.js & Tailwind CSS.
           </div>
@@ -614,8 +620,8 @@ export default function MadhuPortfolio() {
 
       {/* PROJECT DETAILS MODAL */}
       {selectedProject && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-6">
-          <div className="bg-[#131c2e] border border-slate-700 rounded-2xl max-w-2xl w-full p-8 flex flex-col gap-6 relative max-h-[90vh] overflow-y-auto shadow-2xl">
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-6">
+          <div className="bg-[#0f172a] border border-teal-500/40 rounded-2xl max-w-2xl w-full p-8 flex flex-col gap-6 relative max-h-[90vh] overflow-y-auto shadow-2xl">
             <button 
               onClick={() => setSelectedProject(null)}
               className="absolute top-6 right-6 p-2 rounded-full bg-slate-800 text-slate-400 hover:text-white transition-colors"
@@ -624,10 +630,10 @@ export default function MadhuPortfolio() {
             </button>
 
             <div className="flex flex-col gap-2">
-              <span className="px-3 py-1 rounded-full bg-teal-500/10 text-teal-400 border border-teal-500/20 text-xs font-bold uppercase tracking-wider w-fit">
+              <span className="px-3 py-1 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/30 text-xs font-bold uppercase tracking-wider w-fit">
                 {selectedProject.badge}
               </span>
-              <h3 className="text-2xl font-bold text-white">{selectedProject.title}</h3>
+              <h3 className="text-2xl font-bold text-white font-heading">{selectedProject.title}</h3>
             </div>
 
             <div className="flex flex-col gap-3">
@@ -643,7 +649,7 @@ export default function MadhuPortfolio() {
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">Technologies Used:</h4>
               <div className="flex flex-wrap gap-2">
                 {selectedProject.stack.map((tech: string, i: number) => (
-                  <span key={i} className="px-3 py-1 rounded-md bg-teal-500/10 text-teal-300 border border-teal-500/20 text-xs font-semibold">
+                  <span key={i} className="px-3 py-1 rounded-md bg-teal-500/15 text-teal-300 border border-teal-500/30 text-xs font-semibold">
                     {tech}
                   </span>
                 ))}
@@ -655,7 +661,7 @@ export default function MadhuPortfolio() {
                 href={selectedProject.link} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="px-5 py-2.5 rounded-xl bg-teal-400 text-slate-950 font-bold text-xs flex items-center gap-2 hover:bg-teal-300 transition-colors"
+                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-teal-400 to-cyan-500 text-slate-950 font-bold text-xs flex items-center gap-2 hover:opacity-90 transition-opacity"
               >
                 <Globe size={14}/> Live Demo Link
               </a>
